@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Stack de 12 Herramientas IA — Roger.IA</title>
+  <meta name="description" content="Las 12 herramientas de IA que usa Roger.IA todos los días. Casos de uso reales, costos y recomendación de arranque."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--black:#000;--bs:#0a0a0a;--bc:#111;--bh:#181818;--or:#E87040;--od:rgba(232,112,64,.12);--wh:#fff;--wm:rgba(255,255,255,.55);--br:rgba(255,255,255,.07);--bro:rgba(232,112,64,.35);--f:'Inter',system-ui,sans-serif;--r:16px;--rb:8px;--t:.3s cubic-bezier(.4,0,.2,1)}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--f);background:var(--black);color:var(--wh);min-height:100vh;-webkit-font-smoothing:antialiased}
+    a{color:inherit;text-decoration:none}
+    .nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1.25rem,4vw,3rem);height:64px;background:rgba(0,0,0,.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--br)}
+    .nav-logo{font-size:1.1rem;font-weight:800;letter-spacing:-.03em}
+    .nav-logo span{color:var(--or)}
+    .nav-back{display:inline-flex;align-items:center;gap:.4rem;font-size:.8rem;font-weight:500;color:var(--wm);transition:color var(--t)}
+    .nav-back:hover{color:var(--wh)}
+    .nav-back svg{transition:transform var(--t)}
+    .nav-back:hover svg{transform:translateX(-3px)}
+    .hero{padding:clamp(3rem,8vw,6rem) clamp(1.25rem,4vw,3rem) clamp(2rem,5vw,3.5rem);max-width:860px;margin:0 auto}
+    .breadcrumb{font-size:.72rem;color:var(--wm);margin-bottom:1.5rem;display:flex;align-items:center;gap:.4rem;flex-wrap:wrap}
+    .breadcrumb a:hover{color:var(--or)}
+    .breadcrumb span{color:var(--wm);opacity:.4}
+    .label{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--or);background:var(--od);border:1px solid rgba(232,112,64,.25);border-radius:100px;padding:.3rem .8rem;margin-bottom:1.25rem}
+    h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:900;letter-spacing:-.04em;line-height:1.05;margin-bottom:1rem}
+    h1 em{font-style:normal;color:var(--or)}
+    .sub{font-size:1.05rem;color:var(--wm);line-height:1.65;max-width:640px;margin-bottom:2rem}
+    .divider{border:none;border-top:1px solid var(--br)}
+    .content{max-width:860px;margin:0 auto;padding:0 clamp(1.25rem,4vw,3rem) clamp(4rem,8vw,6rem)}
+    .tool{border:1px solid var(--br);border-radius:var(--r);padding:1.75rem;margin-bottom:1.25rem;background:var(--bc);transition:border-color var(--t)}
+    .tool:hover{border-color:var(--bro)}
+    .tool-header{display:flex;align-items:flex-start;gap:1rem;margin-bottom:1rem}
+    .tool-num{min-width:36px;height:36px;border-radius:10px;background:var(--od);border:1px solid rgba(232,112,64,.2);display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:800;color:var(--or)}
+    .tool-meta{}
+    .tool-name{font-size:1.1rem;font-weight:800;letter-spacing:-.02em}
+    .tool-type{font-size:.68rem;font-weight:700;color:var(--or);letter-spacing:.1em;text-transform:uppercase;margin-top:.15rem}
+    .tool-body{font-size:.88rem;color:var(--wm);line-height:1.65}
+    .tool-body p{margin-bottom:.6rem}
+    .tool-body strong{color:var(--wh)}
+    .tool-footer{display:flex;gap:1rem;margin-top:1rem;flex-wrap:wrap}
+    .pill{font-size:.7rem;font-weight:600;padding:.3rem .7rem;border-radius:100px;background:rgba(255,255,255,.06);color:var(--wm);border:1px solid var(--br)}
+    .pill.orange{background:var(--od);color:var(--or);border-color:rgba(232,112,64,.25)}
+    .costs-table{width:100%;border-collapse:collapse;margin:2rem 0;font-size:.85rem}
+    .costs-table th{text-align:left;font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--or);padding:.75rem 1rem;border-bottom:1px solid var(--br)}
+    .costs-table td{padding:.75rem 1rem;border-bottom:1px solid var(--br);color:var(--wm)}
+    .costs-table td:first-child{color:var(--wh);font-weight:600}
+    .costs-table tr:last-child td{border-bottom:none}
+    .costs-table tr:hover td{color:var(--wh)}
+    .callout{background:var(--od);border:1px solid rgba(232,112,64,.25);border-radius:var(--r);padding:1.5rem;margin:2rem 0}
+    .callout-title{font-size:.8rem;font-weight:700;color:var(--or);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.75rem}
+    .callout p{font-size:.88rem;color:var(--wm);line-height:1.6}
+    .callout strong{color:var(--wh)}
+    .quote{border-left:3px solid var(--or);padding-left:1.25rem;margin:2rem 0;font-size:1rem;font-style:italic;color:var(--wm);line-height:1.6}
+    .quote cite{display:block;font-size:.75rem;font-style:normal;font-weight:600;color:var(--or);margin-top:.5rem}
+    .cta-box{text-align:center;background:var(--bs);border:1px solid var(--br);border-radius:var(--r);padding:2.5rem;margin-top:3rem}
+    .cta-box h3{font-size:1.35rem;font-weight:800;letter-spacing:-.03em;margin-bottom:.75rem}
+    .cta-box h3 em{font-style:normal;color:var(--or)}
+    .cta-box p{font-size:.88rem;color:var(--wm);margin-bottom:1.5rem;line-height:1.6}
+    .keyword{display:inline-block;background:var(--od);border:1px solid rgba(232,112,64,.3);border-radius:100px;padding:.35rem 1rem;font-size:.85rem;font-weight:700;color:var(--or);letter-spacing:.05em}
+    .back-btn{display:inline-flex;align-items:center;gap:.5rem;margin-top:2rem;font-size:.82rem;font-weight:600;color:var(--wm);border:1px solid var(--br);border-radius:var(--rb);padding:.55rem 1rem;transition:border-color var(--t),color var(--t)}
+    .back-btn:hover{border-color:var(--bro);color:var(--wh)}
+    .footer{border-top:1px solid var(--br);padding:2rem clamp(1.25rem,4vw,3rem);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+    .footer-logo{font-size:.95rem;font-weight:800;letter-spacing:-.03em}
+    .footer-logo span{color:var(--or)}
+    .footer-copy{font-size:.73rem;color:var(--wm)}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+    .hero{animation:fadeUp .5s ease both}
+    ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--black)}::-webkit-scrollbar-thumb{background:var(--or);border-radius:100px}
+  </style>
+</head>
+<body>
+
+<header class="nav" role="banner">
+  <div class="nav-logo">Roger<span>.IA</span></div>
+  <a href="../arsenal.html" class="nav-back" id="nav-back">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Volver al Arsenal
+  </a>
+</header>
+
+<div class="hero">
+  <nav class="breadcrumb" aria-label="Ruta de navegación">
+    <a href="../index.html">Inicio</a>
+    <span>›</span>
+    <a href="../arsenal.html">Arsenal</a>
+    <span>›</span>
+    <span style="color:var(--wh)">Stack de 12 Herramientas IA</span>
+  </nav>
+  <div class="label">Stack · Herramientas</div>
+  <h1>Stack de <em>12 Herramientas IA</em></h1>
+  <p class="sub">Estas son algunas de las herramientas que uso para producir contenido profesional en 2026. Sin relleno, sin afiliados</p>
+</div>
+
+<hr class="divider"/>
+
+<main class="content" id="main">
+
+  <div class="tool" id="tool-claude">
+    <div class="tool-header">
+      <div class="tool-num">01</div>
+      <div class="tool-meta">
+        <div class="tool-name">Claude</div>
+        <div class="tool-type">Code + Cowork</div>
+      </div>
+    </div>
+    <div class="tool-body">
+      <p>Mi cerebro derecho. Lo uso para escribir, pensar, estructurar y ejecutar ideas. Es el modelo más inteligente para razonamiento complejo y escritura en español latinoamericano.</p>
+      <p><strong>Caso de uso real:</strong> Le doy mi idea de video en una oración y me entrega el guión completo en mi voz — hook, open loop, contenido y CTA. También lo uso para construir mis 6 agentes de Roger.IA.</p>
+      <p><strong>Modos de uso:</strong> Claude.ai (chat) para guiones y copy · Claude Code para automatizaciones · Projects con contexto de marca cargado.</p>
+    </div>
+    <div class="tool-footer">
+      <span class="pill orange">$20 USD/mes · Pro</span>
+      <span class="pill">claude.ai</span>
+    </div>
+  </div>
+
+  <div class="tool" id="tool-chatgpt">
+    <div class="tool-header">
+      <div class="tool-num">02</div>
+      <div class="tool-meta">
+        <div class="tool-name">ChatGPT</div>
+        <div class="tool-type">Research + Plugins</div>
+      </div>
+    </div>
+    <div class="tool-body">
+      <p>El más conocido. Útil para research rápido, ideas en paralelo y acceso a GPTs personalizados. Lo uso para probar prompts que luego enseño en contenido — es la herramienta que mis seguidores más tienen.</p>
+      <p><strong>Cuándo lo uso:</strong> DALL·E 3 para imágenes de concepto rápido · GPT-4o para análisis de imágenes de clientes · Web browsing para tendencias en tiempo real.</p>
+    </div>
+    <div class="tool-footer">
+      <span class="pill">Gratis / $20 USD/mes · Plus</span>
+      <span class="pill">chat.openai.com</span>
+    </div>
+  </div>
+
+  <div class="tool" id="tool-gemini">
+    <div class="tool-header">
+      <div class="tool-num">03</div>
+      <div class="tool-meta">
+        <div class="tool-name">Gemini</div>
+        <div class="tool-type">Imagen 3 + Veo</div>
+      </div>
+    </div>
+    <div class="tool-body">
+      <p>El modelo de Google. Brilla en generación de imágenes con Imagen 3 y video con Veo. Para contenido visual, es el mejor del mercado ahorita.</p>
+      <p><strong>Cómo lo uso:</strong> Mis thumbnails y gráficas salen de Imagen 3. Veo 2 genera clips de hasta 8 segundos para introducir movimiento en Reels sin grabar.</p>
+    </div>
+    <div class="tool-footer">
+      <span class="pill">Gratis / $19.99 USD/mes · AI Premium</span>
+      <span class="pill">gemini.google.com</span>
+    </div>
+  </div>
+
+  <div class="tool" id="tool-notebooklm">
+    <div class="tool-header">
+      <div class="tool-num">04</div>
+      <div class="tool-meta">
+        <div class="tool-name">NotebookLM</div>
+        <div class="tool-type">Análisis de Documentos</div>
+      </div>
+    </div>
+    <div class="tool-body">
+      <p>La herramienta más subestimada de Google. Subí 2 meses de guiones y le pregunté qué temas no he cubierto. Me dio 12 ideas nuevas en 30 segundos basadas en mis propios patrones.</p>
+      <p><strong>Uso pro:</strong> Cargo los PDFs de clientes antes de reuniones. Llego sabiendo más del negocio que ellos.</p>
+    </div>
+    <div class="tool-footer">
+      <span class="pill orange">Gratis</span>
+      <span class="pill">notebooklm.google.com</span>
+    </div>
+  </div>
+
+  <div class="tool" id="tool-manychat">
+    <div class="tool-header">
+      <div class="tool-num">05</div>
+      <div class="tool-meta">
+        <div class="tool-name">ManyChat</div>
+        <div class="tool-type">Automatización de DMs</div>
+      </div>
+    </div>
+    <div class="tool-body">
+      <p>La herramienta que convierte mis videos en leads reales. Sin ManyChat, el contenido no genera negocio.</p>
+      <p><strong>Flujo activo:</strong> Video publicado → audiencia comenta "STACK" → ManyChat detecta la keyword → envía DM automático con el lead magnet → pregunta si quieren más recursos → segmenta al lead. Mientras duermo.</p>
+    </div>
+    <div class="tool-footer">
+      <span class="pill orange">$15 USD/mes · Starter</span>
+      <span class="pill">manychat.com</span>
+    </div>
+  </div>
+
+  <div class="tool" id="tool-notion">
+    <div class="tool-header">
+      <div class="tool-num">06</div>
+      <div class="tool-meta">
+        <div class="tool-name">Notion</div>
+        <div class="tool-type">Sistema Operativo Personal</div>
+      </div>
+    </div>
+    <div class="tool-body">
+      <p>Donde vive todo: calendario editorial, guiones, leads, propuestas, notas de reuniones. Tengo una base de datos de "Ideas de Contenido" con pilar, prioridad, estado y fecha.</p>
+      <p><strong>Con IA:</strong> Notion AI integrado nativamente resume reuniones, expande guiones o traduce documentos sin salir de Notion.</p>
+    </div>
+    <div class="tool-footer">
+      <span class="pill">Gratis / $8 USD/mes · Plus</span>
+      <span class="pill">notion.so</span>
+    </div>
+  </div>
+
+  <div class="tool" id="tool-higgsfield">
+    <div class="tool-header">
+      <div class="tool-num">07</div>
+      <div class="tool-meta">
+        <div class="tool-name">Higgsfield</div>
+        <div class="tool-type">Video Cinematográfico IA</div>
+      </div>
+    </div>
+    <div class="tool-body">
+      <p>Mi favorita para clips de video de calidad cinematográfica que se integran en Reels. Para mi Reel de "El futuro de la IA en marketing", generé 5 clips de 4 segundos en 20 minutos. Parecía producción de agencia.</p>
+      <p><strong>Settings:</strong> Duración 4s · Motion: Cinematic slow push · Style: Photorealistic.</p>
+    </div>
+    <div class="tool-footer">
+      <span class="pill orange">$8 USD/mes · Basic</span>
+      <span class="pill">higgsfield.ai</span>
+    </div>
+  </div>
+
+  <div class="tool" id="tool-canva">
+    <div class="tool-header">
+      <div class="tool-num">08</div>
+      <div class="tool-meta">
+        <div class="tool-name">Canva Pro</div>
+        <div class="tool-type">Diseño Visual</div>
+      </div>
+    </div>
+    <div class="tool-body">
+      <p>Thumbnails, carruseles, stories, piezas visuales estáticas. Mi Brand Kit tiene cargados negro #000000, naranja #E87040, blanco #FFFFFF, tipografías y logo. Cuando el Director de Arte indica cómo hacer el thumbnail, abro Canva y en 5 minutos tengo el resultado.</p>
+    </div>
+    <div class="tool-footer">
+      <span class="pill orange">$15 USD/mes · Pro</span>
+      <span class="pill">canva.com</span>
+    </div>
+  </div>
+
+  <div class="tool" id="tool-jitter">
+    <div class="tool-header">
+      <div class="tool-num">09</div>
+      <div class="tool-meta">
+        <div class="tool-name">Jitter</div>
+        <div class="tool-type">Motion Design</div>
+      </div>
+    </div>
+    <div class="tool-body">
+      <p>Animación de elementos de diseño. El logo de Roger.IA con el "IA" parpadeando al inicio de mis videos — lo hice en Jitter en 15 minutos. Exporté MP4 con fondo transparente y lo agregué como overlay en CapCut.</p>
+      <p><strong>Por qué no After Effects:</strong> No necesitas saber animación. Eliges plantilla, cambias texto o imagen, exportas. Punto.</p>
+    </div>
+    <div class="tool-footer">
+      <span class="pill">Gratis / $15 USD/mes · Pro</span>
+      <span class="pill">jitter.video</span>
+    </div>
+  </div>
+
+  <div class="tool" id="tool-lovable">
+    <div class="tool-header">
+      <div class="tool-num">10</div>
+      <div class="tool-meta">
+        <div class="tool-name">Lovable</div>
+        <div class="tool-type">Desarrollo Web con IA</div>
+      </div>
+    </div>
+    <div class="tool-body">
+      <p>Describes la app o sitio que quieres y Lovable lo construye en React. La primera versión de la landing de Roger.IA la construí en 2 horas. El resultado fue el 80% — el 20% restante lo ajusté con Claude Code.</p>
+    </div>
+    <div class="tool-footer">
+      <span class="pill">Gratis / $20 USD/mes · Starter</span>
+      <span class="pill">lovable.dev</span>
+    </div>
+  </div>
+
+  <div class="tool" id="tool-elevenlabs">
+    <div class="tool-header">
+      <div class="tool-num">11</div>
+      <div class="tool-meta">
+        <div class="tool-name">ElevenLabs</div>
+        <div class="tool-type">Voz IA</div>
+      </div>
+    </div>
+    <div class="tool-body">
+      <p>Clono mi voz para narrar videos cuando no tengo tiempo de grabar. Escribo el guión en Claude y lo narro con mi voz clonada. El audio es indistinguible del real.</p>
+      <p><strong>Funciones clave:</strong> Voice Cloning (1 minuto de tu voz) · Text to Speech · Dubbing para traducir videos manteniendo tu voz.</p>
+    </div>
+    <div class="tool-footer">
+      <span class="pill">Gratis 10K chars / $5 USD/mes · Starter</span>
+      <span class="pill">elevenlabs.io</span>
+    </div>
+  </div>
+
+  <div class="tool" id="tool-epidemic">
+    <div class="tool-header">
+      <div class="tool-num">12</div>
+      <div class="tool-meta">
+        <div class="tool-name">Epidemic Sound</div>
+        <div class="tool-type">Música sin Derechos</div>
+      </div>
+    </div>
+    <div class="tool-body">
+      <p>La diferencia entre un video profesional y uno amateur suele ser el audio. Todos mis Reels llevan música de Epidemic Sound. Para videos de IA uso siempre Electronic / Futuristic / 100–120 BPM.</p>
+      <p><strong>Por qué no música de Instagram:</strong> Si el artista retira derechos, tu video se silencia. Epidemic Sound nunca pasa eso.</p>
+    </div>
+    <div class="tool-footer">
+      <span class="pill orange">$13 USD/mes · Creator</span>
+      <span class="pill">epidemicsound.com</span>
+    </div>
+  </div>
+
+  <h2 style="font-size:1.4rem;font-weight:800;letter-spacing:-.03em;margin:3rem 0 1rem">Resumen de costos</h2>
+  <table class="costs-table" aria-label="Tabla de costos del stack">
+    <thead>
+      <tr><th>#</th><th>Herramienta</th><th>Costo / mes</th><th>Plan</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>Claude</td><td>$20 USD</td><td>Pro</td></tr>
+      <tr><td>2</td><td>ChatGPT</td><td>$0–$20 USD</td><td>Gratis / Plus</td></tr>
+      <tr><td>3</td><td>Gemini</td><td>$0–$20 USD</td><td>Gratis / AI Premium</td></tr>
+      <tr><td>4</td><td>NotebookLM</td><td>Gratis</td><td>—</td></tr>
+      <tr><td>5</td><td>ManyChat</td><td>$15 USD</td><td>Starter</td></tr>
+      <tr><td>6</td><td>Notion</td><td>$0–$8 USD</td><td>Gratis / Plus</td></tr>
+      <tr><td>7</td><td>Higgsfield</td><td>$8 USD</td><td>Basic</td></tr>
+      <tr><td>8</td><td>Canva Pro</td><td>$15 USD</td><td>Pro</td></tr>
+      <tr><td>9</td><td>Jitter</td><td>$0–$15 USD</td><td>Gratis / Pro</td></tr>
+      <tr><td>10</td><td>Lovable</td><td>$0–$20 USD</td><td>Gratis / Starter</td></tr>
+      <tr><td>11</td><td>ElevenLabs</td><td>$0–$5 USD</td><td>Gratis / Starter</td></tr>
+      <tr><td>12</td><td>Epidemic Sound</td><td>$13 USD</td><td>Creator</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <div class="callout-title">🚀 Stack de Arranque</div>
+    <p><strong>Mes 1 — $0:</strong> NotebookLM + Canva (gratis) + ChatGPT (gratis) + ManyChat (gratis)</p>
+    <p style="margin-top:.5rem"><strong>Mes 2 — $35/mes:</strong> Claude Pro ($20) + Canva Pro ($15)</p>
+    <p style="margin-top:.5rem"><strong>Mes 3 — Stack completo:</strong> Agrega ManyChat + Epidemic Sound cuando ya publiques consistente.</p>
+  </div>
+
+  <div class="cta-box">
+    <h3>¿Quieres ver este stack en un <em>workflow real</em>?</h3>
+    <p>Escríbeme a Instagram y te mando el flujo completo de producción de contenido de 30 minutos.</p>
+    <div class="keyword">Escribe FLOW a @roger.ia_</div>
+  </div>
+
+  <div style="text-align:center">
+    <a href="../arsenal.html" class="back-btn" id="back-arsenal">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Volver al Arsenal
+    </a>
+  </div>
+</main>
+
+<footer class="footer" role="contentinfo">
+  <div class="footer-logo">Roger<span>.IA</span></div>
+  <p class="footer-copy">La IA no es complicada, te la complican. · @roger.ia_ · 2026</p>
+</footer>
+
+</body>
+</html>

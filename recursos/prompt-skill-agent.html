@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Prompt vs Skill vs Agent — Roger.IA</title>
+  <meta name="description" content="La diferencia real entre Prompt, Skill y Agent. Guía completa con ejemplos, casos de uso por industria y la tabla comparativa definitiva."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--black:#000;--bs:#0a0a0a;--bc:#111;--or:#E87040;--od:rgba(232,112,64,.12);--wh:#fff;--wm:rgba(255,255,255,.55);--br:rgba(255,255,255,.07);--bro:rgba(232,112,64,.35);--f:'Inter',system-ui,sans-serif;--r:16px;--rb:8px;--t:.3s cubic-bezier(.4,0,.2,1)}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--f);background:var(--black);color:var(--wh);min-height:100vh;-webkit-font-smoothing:antialiased}
+    a{color:inherit;text-decoration:none}
+    .nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1.25rem,4vw,3rem);height:64px;background:rgba(0,0,0,.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--br)}
+    .nav-logo{font-size:1.1rem;font-weight:800;letter-spacing:-.03em}.nav-logo span{color:var(--or)}
+    .nav-back{display:inline-flex;align-items:center;gap:.4rem;font-size:.8rem;font-weight:500;color:var(--wm);transition:color var(--t)}.nav-back:hover{color:var(--wh)}.nav-back svg{transition:transform var(--t)}.nav-back:hover svg{transform:translateX(-3px)}
+    .hero{padding:clamp(3rem,8vw,6rem) clamp(1.25rem,4vw,3rem) clamp(2rem,5vw,3.5rem);max-width:860px;margin:0 auto;animation:fadeUp .5s ease both}
+    .breadcrumb{font-size:.72rem;color:var(--wm);margin-bottom:1.5rem;display:flex;align-items:center;gap:.4rem;flex-wrap:wrap}.breadcrumb a:hover{color:var(--or)}.breadcrumb span{color:var(--wm);opacity:.4}
+    .label{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--or);background:var(--od);border:1px solid rgba(232,112,64,.25);border-radius:100px;padding:.3rem .8rem;margin-bottom:1.25rem}
+    h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:900;letter-spacing:-.04em;line-height:1.05;margin-bottom:1rem}h1 em{font-style:normal;color:var(--or)}
+    .sub{font-size:1.05rem;color:var(--wm);line-height:1.65;max-width:640px;margin-bottom:2rem}
+    .divider{border:none;border-top:1px solid var(--br)}
+    .content{max-width:860px;margin:0 auto;padding:0 clamp(1.25rem,4vw,3rem) clamp(4rem,8vw,6rem)}
+    h2{font-size:clamp(1.5rem,3vw,2rem);font-weight:900;letter-spacing:-.04em;margin:3rem 0 1rem}h2 em{font-style:normal;color:var(--or)}
+    h3{font-size:1.1rem;font-weight:700;margin:1.75rem 0 .6rem;color:var(--wh)}
+    p{font-size:.9rem;color:var(--wm);line-height:1.7;margin-bottom:.8rem}
+    strong{color:var(--wh)}
+    .level-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem;margin:2rem 0}
+    .level-card{padding:1.5rem;background:var(--bc);border:1px solid var(--br);border-radius:var(--r);transition:border-color var(--t)}.level-card:hover{border-color:var(--bro)}
+    .level-badge{display:inline-block;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.25rem .65rem;border-radius:100px;margin-bottom:.75rem}
+    .badge-prompt{background:rgba(99,102,241,.15);color:#818cf8;border:1px solid rgba(99,102,241,.3)}
+    .badge-skill{background:rgba(20,184,166,.12);color:#2dd4bf;border:1px solid rgba(20,184,166,.3)}
+    .badge-agent{background:var(--od);color:var(--or);border:1px solid rgba(232,112,64,.3)}
+    .level-card h3{margin:0 0 .5rem;font-size:1.1rem}
+    .level-card p{margin:0;font-size:.82rem}
+    .code-block{background:var(--bs);border:1px solid var(--br);border-radius:12px;padding:1.25rem 1.5rem;margin:1rem 0;font-family:monospace;font-size:.82rem;color:rgba(255,255,255,.7);line-height:1.7;overflow-x:auto}
+    .code-block .key{color:var(--or);font-weight:600}
+    .compare-table{width:100%;border-collapse:collapse;margin:2rem 0;font-size:.82rem}
+    .compare-table th{text-align:left;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--or);padding:.75rem 1rem;border-bottom:1px solid var(--br)}
+    .compare-table td{padding:.75rem 1rem;border-bottom:1px solid var(--br);color:var(--wm);vertical-align:top}
+    .compare-table td:first-child{color:var(--wh);font-weight:600;white-space:nowrap}
+    .compare-table tr:last-child td{border-bottom:none}
+    .industry{background:var(--bc);border:1px solid var(--br);border-radius:var(--r);padding:1.5rem;margin-bottom:1rem;transition:border-color var(--t)}.industry:hover{border-color:var(--bro)}
+    .industry-title{font-size:1rem;font-weight:700;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
+    .industry p{font-size:.82rem;margin-bottom:.5rem}
+    .progression{background:var(--bs);border:1px solid var(--br);border-radius:var(--r);padding:1.5rem;margin:2rem 0;overflow-x:auto}
+    .progression-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--br)}
+    .prog-col{padding:1.25rem;background:var(--black)}
+    .prog-label{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--wm);margin-bottom:.5rem}
+    .prog-title{font-size:.9rem;font-weight:700;margin-bottom:.4rem}
+    .prog-example{font-size:.75rem;color:var(--wm);line-height:1.5;font-style:italic}
+    .callout{background:var(--od);border:1px solid rgba(232,112,64,.25);border-radius:var(--r);padding:1.5rem;margin:2rem 0}
+    .callout-title{font-size:.8rem;font-weight:700;color:var(--or);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.75rem}
+    .callout p{font-size:.88rem;color:var(--wm);line-height:1.6;margin-bottom:.4rem}
+    .quote{border-left:3px solid var(--or);padding-left:1.25rem;margin:2rem 0;font-size:1rem;font-style:italic;color:var(--wm);line-height:1.6}
+    .quote cite{display:block;font-size:.75rem;font-style:normal;font-weight:600;color:var(--or);margin-top:.5rem}
+    .cta-box{text-align:center;background:var(--bs);border:1px solid var(--br);border-radius:var(--r);padding:2.5rem;margin-top:3rem}
+    .cta-box h3{font-size:1.35rem;font-weight:800;letter-spacing:-.03em;margin-bottom:.75rem}
+    .cta-box h3 em{font-style:normal;color:var(--or)}
+    .cta-box p{font-size:.88rem;color:var(--wm);margin-bottom:1.5rem;line-height:1.6}
+    .keyword{display:inline-block;background:var(--od);border:1px solid rgba(232,112,64,.3);border-radius:100px;padding:.35rem 1rem;font-size:.85rem;font-weight:700;color:var(--or);letter-spacing:.05em}
+    .back-btn{display:inline-flex;align-items:center;gap:.5rem;margin-top:2rem;font-size:.82rem;font-weight:600;color:var(--wm);border:1px solid var(--br);border-radius:var(--rb);padding:.55rem 1rem;transition:border-color var(--t),color var(--t)}.back-btn:hover{border-color:var(--bro);color:var(--wh)}
+    .footer{border-top:1px solid var(--br);padding:2rem clamp(1.25rem,4vw,3rem);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+    .footer-logo{font-size:.95rem;font-weight:800;letter-spacing:-.03em}.footer-logo span{color:var(--or)}
+    .footer-copy{font-size:.73rem;color:var(--wm)}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+    ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--black)}::-webkit-scrollbar-thumb{background:var(--or);border-radius:100px}
+    @media(max-width:600px){.progression-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+
+<header class="nav" role="banner">
+  <div class="nav-logo">Roger<span>.IA</span></div>
+  <a href="../arsenal.html" class="nav-back" id="nav-back">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Volver al Arsenal
+  </a>
+</header>
+
+<div class="hero">
+  <nav class="breadcrumb" aria-label="Ruta de navegación">
+    <a href="../index.html">Inicio</a><span>›</span>
+    <a href="../arsenal.html">Arsenal</a><span>›</span>
+    <span style="color:var(--wh)">Prompt vs Skill vs Agent</span>
+  </nav>
+  <div class="label">Framework · Conceptos</div>
+  <h1>Prompt vs <em>Skill</em> vs Agent</h1>
+  <p class="sub">La diferencia real que determina qué tan poderoso es tu uso de la IA. El que solo sabe Prompts obtiene respuestas. El que construye Agents, escala.</p>
+</div>
+
+<hr class="divider"/>
+
+<main class="content" id="main">
+
+  <div class="level-cards">
+    <div class="level-card" id="nivel-prompt">
+      <span class="level-badge badge-prompt">Nivel 1</span>
+      <h3>Prompt</h3>
+      <p>Una instrucción. La forma más básica de interactuar con la IA. Rápido de hacer, sin consistencia, sin memoria.</p>
+    </div>
+    <div class="level-card" id="nivel-skill">
+      <span class="level-badge badge-skill">Nivel 2</span>
+      <h3>Skill</h3>
+      <p>Conjunto de instrucciones + contexto + ejemplos definidos de antemano. La IA produce resultados consistentes sin que repitas el contexto.</p>
+    </div>
+    <div class="level-card" id="nivel-agent">
+      <span class="level-badge badge-agent">Nivel 3</span>
+      <h3>Agent</h3>
+      <p>Sistema autónomo con memoria, herramientas y capacidad de tomar decisiones. Trabaja solo mientras tú haces otras cosas.</p>
+    </div>
+  </div>
+
+  <h2>¿Qué es un <em>Prompt</em>?</h2>
+  <p>Un Prompt es cualquier mensaje que le envías a una herramienta de IA. Pero hay una diferencia enorme entre un prompt malo y uno bueno — y esa diferencia no es magia, es estructura.</p>
+
+  <h3>La anatomía de un buen prompt</h3>
+  <div class="code-block">
+    <span class="key">ROL</span>      → ¿Quién eres tú en este contexto?<br>
+    <span class="key">TAREA</span>    → ¿Qué quieres que haga exactamente?<br>
+    <span class="key">CONTEXTO</span> → ¿Qué información necesita para hacerlo bien?<br>
+    <span class="key">FORMATO</span>  → ¿Cómo quieres que te entregue el resultado?
+  </div>
+
+  <h3>Prompt malo vs bueno</h3>
+  <p><strong>Malo:</strong> "Escríbeme un email para mis clientes" → email genérico que suena a plantilla corporativa.</p>
+  <p><strong>Bueno:</strong> "Eres un copywriter especializado en pequeños negocios de restauración en México. Escribe un email para clientes de un restaurante familiar en Guadalajara. Objetivo: anunciar el nuevo menú de mariscos. Tono: cálido, familiar, no vendedor. Máximo 150 palabras. CTA: 'Haz tu reservación'." → Email que parece escrito por alguien que conoce el negocio.</p>
+
+  <p><strong>Regla de oro:</strong> Más contexto = mejor resultado. La IA no adivina. Funciona con lo que le das.</p>
+
+  <h2>¿Qué es una <em>Skill</em>?</h2>
+  <p>Una Skill es el conocimiento especializado que le instalas a la IA de antemano. En lugar de repetir el contexto cada vez, lo defines una sola vez y la IA lo aplica automáticamente.</p>
+
+  <h3>Cómo se construye una Skill</h3>
+  <div class="code-block">
+    <span class="key">IDENTIDAD</span>    → Quién es el usuario y para qué usa la IA<br>
+    <span class="key">AUDIENCIA</span>    → A quién van dirigidos los outputs<br>
+    <span class="key">VOZ DE MARCA</span> → Tono, palabras permitidas, prohibidas<br>
+    <span class="key">FORMATO</span>      → Estructuras de output predefinidas<br>
+    <span class="key">EJEMPLOS</span>     → 2–3 muestras de resultados excelentes<br>
+    <span class="key">REGLAS</span>       → Lo que nunca debe hacer
+  </div>
+
+  <h3>Ejemplo real: Mi Guionista</h3>
+  <p>El agente Guionista de Roger.IA tiene una Skill que incluye voz de marca ("conversacional, directo, sin tecnicismos"), estructura obligatoria (Hook → Open Loop → Contenido → CTA), palabras prohibidas (innovador, disruptivo, sinergia) y 3 guiones reales de videos que funcionaron.</p>
+  <p>Resultado: cada guión suena como yo, sigue la estructura correcta y nunca usa las palabras que manchan la marca. Sin configurar nada cada vez.</p>
+
+  <h2>¿Qué es un <em>Agent</em>?</h2>
+  <p>Un Agent es una IA que puede tomar decisiones, ejecutar acciones y coordinar múltiples tareas de manera autónoma. No solo responde preguntas — actúa en el mundo real.</p>
+
+  <h3>La analogía del restaurante</h3>
+  <p><strong>Prompt:</strong> Le preguntas al cocinero cómo hacer caldo de pollo. Él explica. Tú lo haces.</p>
+  <p><strong>Skill:</strong> El cocinero conoce todas tus recetas favoritas. Cuando dices "haz algo para 4 personas", ya sabe qué prefieres.</p>
+  <p><strong>Agent:</strong> El cocinero tiene acceso a tu refrigerador, puede ir al súper, tiene el presupuesto del día y la lista de invitados. Cuando llegas, la comida está lista. Tú no hiciste nada.</p>
+
+  <h3>Lo que hace diferente a un Agent</h3>
+  <div class="code-block">
+    <span class="key">MEMORIA</span>      → Recuerda interacciones pasadas<br>
+    <span class="key">HERRAMIENTAS</span> → Puede buscar en internet, enviar emails, actualizar bases de datos<br>
+    <span class="key">RAZONAMIENTO</span> → Descompone problemas complejos en pasos y los ejecuta<br>
+    <span class="key">COORDINACIÓN</span> → Puede orquestar otros agentes<br>
+    <span class="key">AUTONOMÍA</span>    → Actúa sin esperar instrucción para cada paso
+  </div>
+
+  <h2>Tabla <em>Comparativa</em></h2>
+  <div style="overflow-x:auto">
+    <table class="compare-table" aria-label="Comparativa Prompt vs Skill vs Agent">
+      <thead><tr><th>Criterio</th><th>Prompt</th><th>Skill</th><th>Agent</th></tr></thead>
+      <tbody>
+        <tr><td>Configuración</td><td>Segundos</td><td>Horas (una vez)</td><td>Días/semanas (una vez)</td></tr>
+        <tr><td>Consistencia</td><td>Baja</td><td>Alta</td><td>Muy alta</td></tr>
+        <tr><td>Autonomía</td><td>Ninguna</td><td>Baja</td><td>Alta</td></tr>
+        <tr><td>Escalabilidad</td><td>No escala</td><td>Con esfuerzo</td><td>Sola</td></tr>
+        <tr><td>Inversión</td><td>$0</td><td>Tiempo</td><td>Tiempo + herramientas</td></tr>
+        <tr><td>Para quién</td><td>Cualquiera</td><td>Negocios con procesos definidos</td><td>Negocios que ya usan IA</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="progression" aria-label="Progresión de niveles">
+    <div style="font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--or);margin-bottom:1rem">El progreso natural</div>
+    <div class="progression-grid">
+      <div class="prog-col">
+        <div class="prog-label">Principiante</div>
+        <div class="prog-title">Prompt básico</div>
+        <div class="prog-example">"Dame ideas para un video"</div>
+      </div>
+      <div class="prog-col" style="background:var(--bs)">
+        <div class="prog-label">Intermedio</div>
+        <div class="prog-title">Prompt + Skills</div>
+        <div class="prog-example">"Mi Guionista genera guiones en mi voz"</div>
+      </div>
+      <div class="prog-col">
+        <div class="prog-label">Avanzado</div>
+        <div class="prog-title">Agent + Orquestación</div>
+        <div class="prog-example">"El sistema detecta el mejor horario y publica solo"</div>
+      </div>
+    </div>
+  </div>
+
+  <h2>Casos de uso por <em>Industria</em></h2>
+
+  <div class="industry" id="industria-inmobiliaria">
+    <div class="industry-title">🏠 Inmobiliaria</div>
+    <p><strong>Prompt:</strong> "Escribe una descripción de esta casa de 3 recámaras en Mazatlán para MLS."</p>
+    <p><strong>Skill:</strong> Sistema entrenado con portafolio, precios y zonas. Genera descripciones, responde compradores y califica leads.</p>
+    <p><strong>Agent:</strong> Cuando entra un lead, califica el perfil, hace match con propiedades, envía propuesta personalizada y agenda la cita. El agente humano solo va a la visita.</p>
+  </div>
+
+  <div class="industry" id="industria-restaurante">
+    <div class="industry-title">🍽️ Restaurante</div>
+    <p><strong>Prompt:</strong> "Escribe 5 posts para Instagram para promover mi nuevo menú de mariscos."</p>
+    <p><strong>Skill:</strong> Community Manager IA entrenado con el menú, precios, horarios y tono de marca. Genera contenido semanal y responde comentarios.</p>
+    <p><strong>Agent:</strong> Monitorea reservaciones, envía confirmaciones por WhatsApp, recuerda a clientes 2 horas antes y pide el review de Google después. Sin intervención humana.</p>
+  </div>
+
+  <div class="industry" id="industria-creador">
+    <div class="industry-title">📱 Creador de Contenido</div>
+    <p><strong>Prompt:</strong> "Escribe un hook para un video sobre los 3 errores más comunes al usar ChatGPT."</p>
+    <p><strong>Skill:</strong> Los 6 agentes de Roger.IA — Guionista, Estratega, Copy-Roger, Guardián de Marca, Growth Agent y Director de Arte.</p>
+    <p><strong>Agent:</strong> Analiza rendimiento semanal, genera el calendario siguiente, escribe guiones base y los somete al Guardián. El creador solo graba y aprueba.</p>
+  </div>
+
+  <div class="callout">
+    <div class="callout-title">⚠️ La trampa más común</div>
+    <p><strong>Saltar al Agent antes de dominar el Prompt.</strong></p>
+    <p>Si tu Prompt es malo, tu Agent escala resultados malos. La base siempre importa.</p>
+    <p style="margin-top:.5rem">El orden correcto: <strong>Domina el Prompt → Construye Skills → Automatiza con Agents.</strong></p>
+  </div>
+
+  <blockquote class="quote">
+    "La IA más poderosa no es la más cara. Es la que entiendes lo suficientemente bien como para saber exactamente qué pedirle."
+    <cite>— Roger.IA</cite>
+  </blockquote>
+
+  <div class="cta-box">
+    <h3>¿Quieres construir tu <em>primera Skill</em>?</h3>
+    <p>Escríbeme a Instagram y te guío personalmente en el proceso.</p>
+    <div class="keyword">Escribe SKILL a @roger.ia_</div>
+  </div>
+
+  <div style="text-align:center">
+    <a href="../arsenal.html" class="back-btn" id="back-arsenal">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Volver al Arsenal
+    </a>
+  </div>
+</main>
+
+<footer class="footer" role="contentinfo">
+  <div class="footer-logo">Roger<span>.IA</span></div>
+  <p class="footer-copy">La IA no es complicada, te la complican. · @roger.ia_ · 2026</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arsenal — Roger.IA</title>
+  <meta name="description" content="Recursos gratuitos de IA que uso todos los días. Herramientas, comparativas y workflows para dueños de negocio que quieren resultados reales." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── TOKENS ─────────────────────────────────────────────── */
+    :root {
+      --black:       #000000;
+      --black-soft:  #0a0a0a;
+      --black-card:  #111111;
+      --black-hover: #181818;
+      --orange:      #E87040;
+      --orange-dim:  rgba(232, 112, 64, 0.12);
+      --orange-glow: rgba(232, 112, 64, 0.25);
+      --white:       #FFFFFF;
+      --white-muted: rgba(255, 255, 255, 0.55);
+      --white-dim:   rgba(255, 255, 255, 0.08);
+      --border:      rgba(255, 255, 255, 0.07);
+      --border-hover:rgba(232, 112, 64, 0.35);
+
+      --font: 'Inter', system-ui, sans-serif;
+      --radius-card: 16px;
+      --radius-btn:  8px;
+      --transition:  0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ─── RESET ──────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background-color: var(--black);
+      color: var(--white);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    /* ─── NAV ────────────────────────────────────────────────── */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(1.25rem, 4vw, 3rem);
+      height: 64px;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .nav-logo span {
+      color: var(--orange);
+    }
+
+    .nav-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--white-muted);
+      transition: color var(--transition);
+    }
+
+    .nav-back:hover { color: var(--white); }
+
+    .nav-back svg {
+      transition: transform var(--transition);
+    }
+
+    .nav-back:hover svg { transform: translateX(-3px); }
+
+    /* ─── HERO SECTION ───────────────────────────────────────── */
+    .hero {
+      text-align: center;
+      padding: clamp(4rem, 10vw, 7rem) clamp(1.25rem, 4vw, 3rem) clamp(2.5rem, 6vw, 4rem);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Ambient glow behind hero */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 350px;
+      background: radial-gradient(ellipse, rgba(232, 112, 64, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-label {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--orange);
+      background: var(--orange-dim);
+      border: 1px solid rgba(232, 112, 64, 0.25);
+      border-radius: 100px;
+      padding: 0.35rem 0.85rem;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .hero-title {
+      font-size: clamp(2.5rem, 6vw, 4.25rem);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      margin-bottom: 1.25rem;
+      animation: fadeUp 0.6s 0.1s ease both;
+    }
+
+    .hero-title em {
+      font-style: normal;
+      color: var(--orange);
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: var(--white-muted);
+      max-width: 560px;
+      margin: 0 auto;
+      line-height: 1.6;
+      animation: fadeUp 0.6s 0.2s ease both;
+    }
+
+    /* ─── GRID SECTION ───────────────────────────────────────── */
+    .arsenal-section {
+      padding: 0 clamp(1.25rem, 4vw, 3rem) clamp(5rem, 10vw, 8rem);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .arsenal-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+    }
+
+    @media (min-width: 768px) {
+      .arsenal-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+      }
+    }
+
+    @media (min-width: 1100px) {
+      .arsenal-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
+      }
+    }
+
+    /* ─── CARD ───────────────────────────────────────────────── */
+    .card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      background: var(--black-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      cursor: pointer;
+      transition:
+        transform       var(--transition),
+        border-color    var(--transition),
+        box-shadow      var(--transition),
+        background      var(--transition);
+
+      /* Fade-in staggered via inline --delay */
+      opacity: 0;
+      animation: fadeUp 0.55s ease both;
+      animation-delay: var(--delay, 0s);
+    }
+
+    .card:hover {
+      transform: translateY(-6px) scale(1.01);
+      border-color: var(--border-hover);
+      background: var(--black-hover);
+      box-shadow:
+        0 0 0 1px rgba(232, 112, 64, 0.12),
+        0 20px 48px rgba(0, 0, 0, 0.6),
+        0 0 60px rgba(232, 112, 64, 0.06);
+    }
+
+    /* Orange top accent line that slides in on hover */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--orange), transparent);
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+
+    .card:hover::before { opacity: 1; }
+
+    /* ─── CARD THUMBNAIL ─────────────────────────────────────── */
+    .card-thumb {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      background: var(--black-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Subtle gradient overlay on thumb */
+    .card-thumb::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(232,112,64,0.07) 0%, transparent 60%);
+      transition: opacity var(--transition);
+    }
+
+    .card:hover .card-thumb::after { opacity: 0.5; }
+
+    /* Icon container */
+    .card-icon {
+      position: relative;
+      z-index: 1;
+      width: 64px;
+      height: 64px;
+      border-radius: 14px;
+      background: var(--orange-dim);
+      border: 1px solid rgba(232, 112, 64, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      transition: transform var(--transition), background var(--transition);
+      box-shadow: 0 4px 20px rgba(232, 112, 64, 0.12);
+    }
+
+    .card:hover .card-icon {
+      transform: scale(1.08);
+      background: rgba(232, 112, 64, 0.2);
+    }
+
+    /* Corner badge */
+    .card-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 2;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--orange);
+      background: rgba(0,0,0,0.75);
+      border: 1px solid rgba(232, 112, 64, 0.3);
+      border-radius: 100px;
+      padding: 0.2rem 0.5rem;
+      backdrop-filter: blur(6px);
+    }
+
+    /* ─── CARD BODY ──────────────────────────────────────────── */
+    .card-body {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      padding: 1.1rem 1.1rem 1.25rem;
+      gap: 0.5rem;
+    }
+
+    .card-tag {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--orange);
+      opacity: 0.8;
+    }
+
+    .card-title {
+      font-size: clamp(0.9rem, 1.5vw, 1.05rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+      color: var(--white);
+    }
+
+    .card-desc {
+      font-size: 0.8rem;
+      line-height: 1.55;
+      color: var(--white-muted);
+      flex: 1;
+    }
+
+    /* ─── CARD BUTTON ────────────────────────────────────────── */
+    .card-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      width: 100%;
+      margin-top: 0.75rem;
+      padding: 0.65rem 1rem;
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-btn);
+      font-family: var(--font);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--white-muted);
+      cursor: pointer;
+      transition:
+        background    var(--transition),
+        border-color  var(--transition),
+        color         var(--transition),
+        transform     var(--transition);
+    }
+
+    .card-btn svg {
+      flex-shrink: 0;
+      transition: transform var(--transition);
+    }
+
+    .card:hover .card-btn {
+      background: var(--orange);
+      border-color: var(--orange);
+      color: var(--white);
+    }
+
+    .card:hover .card-btn svg { transform: translateX(3px); }
+
+    /* ─── FOOTER ─────────────────────────────────────────────── */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem clamp(1.25rem, 4vw, 3rem);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      text-align: center;
+    }
+
+    .footer-logo {
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .footer-logo span { color: var(--orange); }
+
+    .footer-copy {
+      font-size: 0.75rem;
+      color: var(--white-muted);
+    }
+
+    /* ─── ANIMATIONS ─────────────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── SCROLLBAR ──────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--black); }
+    ::-webkit-scrollbar-thumb {
+      background: var(--orange);
+      border-radius: 100px;
+      opacity: 0.5;
+    }
+
+    /* ─── RESPONSIVE TWEAKS ──────────────────────────────────── */
+    @media (max-width: 480px) {
+      .card-icon { width: 54px; height: 54px; font-size: 1.65rem; }
+      .card-body  { padding: 0.9rem 0.9rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAV ───────────────────────────────────────────────── -->
+  <header class="nav" role="banner">
+    <div class="nav-logo">Roger<span>.IA</span></div>
+    <a href="index.html" class="nav-back" aria-label="Volver al inicio">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Volver al inicio
+    </a>
+  </header>
+
+  <!-- ── HERO ──────────────────────────────────────────────── -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-label">Recursos gratuitos</div>
+    <h1 class="hero-title" id="hero-title">Mi <em>Arsenal</em></h1>
+    <p class="hero-sub">
+      Todo lo que uso todos los días. Sin relleno, sin teoría muerta.
+      Herramientas, comparativas y workflows que funcionan hoy.
+    </p>
+  </section>
+
+  <!-- ── CARD GRID ──────────────────────────────────────────── -->
+  <main class="arsenal-section" id="arsenal">
+    <div class="arsenal-grid" role="list">
+
+      <!-- CARD 1 — Stack de 12 Herramientas IA -->
+      <article class="card" style="--delay: 0.3s" id="card-stack" role="listitem"
+               tabindex="0" aria-label="Stack de 12 Herramientas IA — Ver recurso">
+        <div class="card-thumb">
+          <div class="card-badge">Herramientas</div>
+          <div class="card-icon" aria-hidden="true">🛠️</div>
+        </div>
+        <div class="card-body">
+          <span class="card-tag">Stack</span>
+          <h2 class="card-title">Stack de 12 Herramientas IA</h2>
+          <p class="card-desc">
+            Las 12 herramientas que uso todos los días con casos de uso reales.
+          </p>
+          <button class="card-btn" id="btn-stack" aria-label="Ver recurso: Stack de 12 Herramientas IA">
+            Ver recurso
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </article>
+
+      <!-- CARD 2 — Prompt vs Skill vs Agent -->
+      <article class="card" style="--delay: 0.4s" id="card-conceptos" role="listitem"
+               tabindex="0" aria-label="Prompt vs Skill vs Agent — Ver recurso">
+        <div class="card-thumb">
+          <div class="card-badge">Conceptos</div>
+          <div class="card-icon" aria-hidden="true">🧠</div>
+        </div>
+        <div class="card-body">
+          <span class="card-tag">Framework</span>
+          <h2 class="card-title">Prompt vs Skill vs Agent</h2>
+          <p class="card-desc">
+            Entiende la diferencia y cuándo usar cada uno.
+          </p>
+          <button class="card-btn" id="btn-conceptos" aria-label="Ver recurso: Prompt vs Skill vs Agent">
+            Ver recurso
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </article>
+
+      <!-- CARD 3 — Claude vs ChatGPT vs Gemini -->
+      <article class="card" style="--delay: 0.5s" id="card-comparativa" role="listitem"
+               tabindex="0" aria-label="Claude vs ChatGPT vs Gemini — Ver recurso">
+        <div class="card-thumb">
+          <div class="card-badge">Comparativa</div>
+          <div class="card-icon" aria-hidden="true">⚖️</div>
+        </div>
+        <div class="card-body">
+          <span class="card-tag">Comparativa</span>
+          <h2 class="card-title">Claude vs ChatGPT vs Gemini</h2>
+          <p class="card-desc">
+            Comparativa honesta: cuál usar para qué tarea.
+          </p>
+          <button class="card-btn" id="btn-comparativa" aria-label="Ver recurso: Claude vs ChatGPT vs Gemini">
+            Ver recurso
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </article>
+
+      <!-- CARD 4 — De Idea a Video en 30 Min -->
+      <article class="card" style="--delay: 0.6s" id="card-workflow" role="listitem"
+               tabindex="0" aria-label="De Idea a Video en 30 Min — Ver recurso">
+        <div class="card-thumb">
+          <div class="card-badge">Workflow</div>
+          <div class="card-icon" aria-hidden="true">🎬</div>
+        </div>
+        <div class="card-body">
+          <span class="card-tag">Workflow</span>
+          <h2 class="card-title">De Idea a Video en 30 Min</h2>
+          <p class="card-desc">
+            Workflow completo: de concepto a video publicado.
+          </p>
+          <button class="card-btn" id="btn-workflow" aria-label="Ver recurso: De Idea a Video en 30 Min">
+            Ver recurso
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </article>
+
+    </div>
+  </main>
+
+  <!-- ── FOOTER ─────────────────────────────────────────────── -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer-logo">Roger<span>.IA</span></div>
+    <p class="footer-copy">
+      La IA no es complicada, te la complican. — @roger.ia_ · 2026
+    </p>
+  </footer>
+
+  <!-- ── SCRIPT: keyboard nav + card click ─────────────────── -->
+  <script>
+    // Make cards fully keyboard-accessible
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          card.querySelector('.card-btn').click();
+        }
+      });
+    });
+
+    // Placeholder click handler — swap href per card when pages exist
+    const routes = {
+      'btn-stack':       'recursos/stack-herramientas-ia.html',
+      'btn-conceptos':   'recursos/prompt-skill-agent.html',
+      'btn-comparativa': 'recursos/claude-chatgpt-gemini.html',
+      'btn-workflow':    'recursos/de-idea-a-video-30-min.html',
+    };
+
+    document.querySelectorAll('.card-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const path = routes[btn.id];
+        if (path) {
+          window.location.href = path;
+        }
+      });
+    });
+
+    // Click anywhere on card also navigates
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('click', () => {
+        const btn = card.querySelector('.card-btn');
+        if (btn) btn.click();
+      });
+    });
+  </script>
+
+</body>
+</html>

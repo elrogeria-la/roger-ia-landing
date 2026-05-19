@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>De Idea a Video en 30 Min — Roger.IA</title>
+  <meta name="description" content="Workflow completo paso a paso para convertir una idea en video publicado en redes sociales en solo 30 minutos."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--black:#000;--bs:#0a0a0a;--bc:#111;--bh:#181818;--or:#E87040;--od:rgba(232,112,64,.12);--wh:#fff;--wm:rgba(255,255,255,.55);--br:rgba(255,255,255,.07);--bro:rgba(232,112,64,.35);--f:'Inter',system-ui,sans-serif;--r:16px;--rb:8px;--t:.3s cubic-bezier(.4,0,.2,1)}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--f);background:var(--black);color:var(--wh);min-height:100vh;-webkit-font-smoothing:antialiased}
+    a{color:inherit;text-decoration:none}
+    .nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1.25rem,4vw,3rem);height:64px;background:rgba(0,0,0,.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--br)}
+    .nav-logo{font-size:1.1rem;font-weight:800;letter-spacing:-.03em}
+    .nav-logo span{color:var(--or)}
+    .nav-back{display:inline-flex;align-items:center;gap:.4rem;font-size:.8rem;font-weight:500;color:var(--wm);transition:color var(--t)}
+    .nav-back:hover{color:var(--wh)}
+    .nav-back svg{transition:transform var(--t)}
+    .nav-back:hover svg{transform:translateX(-3px)}
+    .hero{padding:clamp(3rem,8vw,6rem) clamp(1.25rem,4vw,3rem) clamp(2rem,5vw,3.5rem);max-width:860px;margin:0 auto}
+    .breadcrumb{font-size:.72rem;color:var(--wm);margin-bottom:1.5rem;display:flex;align-items:center;gap:.4rem;flex-wrap:wrap}
+    .breadcrumb a:hover{color:var(--or)}
+    .breadcrumb span{color:var(--wm);opacity:.4}
+    .label{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--or);background:var(--od);border:1px solid rgba(232,112,64,.25);border-radius:100px;padding:.3rem .8rem;margin-bottom:1.25rem}
+    h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:900;letter-spacing:-.04em;line-height:1.05;margin-bottom:1rem}
+    h1 em{font-style:normal;color:var(--or)}
+    .sub{font-size:1.05rem;color:var(--wm);line-height:1.65;max-width:640px;margin-bottom:2rem}
+    .divider{border:none;border-top:1px solid var(--br)}
+    .content{max-width:860px;margin:0 auto;padding:0 clamp(1.25rem,4vw,3rem) clamp(4rem,8vw,6rem)}
+    h2{font-size:clamp(1.4rem,3vw,1.9rem);font-weight:900;letter-spacing:-.04em;margin:3rem 0 1rem}
+    h2 em{font-style:normal;color:var(--or)}
+    p{font-size:.88rem;color:var(--wm);line-height:1.7;margin-bottom:.7rem}
+    strong{color:var(--wh)}
+    .overview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem;margin:2rem 0}
+    .overview-card{padding:1.25rem;background:var(--bc);border:1px solid var(--br);border-radius:var(--r);transition:border-color var(--t);text-align:center}
+    .overview-card:hover{border-color:var(--bro)}
+    .ov-time{font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--or);background:var(--od);border:1px solid rgba(232,112,64,.25);border-radius:100px;padding:.2rem .7rem;display:inline-block;margin-bottom:.7rem}
+    .ov-tool{font-size:1rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.3rem}
+    .ov-task{font-size:.75rem;color:var(--wm);line-height:1.4}
+    .step{border:1px solid var(--br);border-radius:var(--r);padding:1.75rem;margin-bottom:1.25rem;background:var(--bc);transition:border-color var(--t)}
+    .step:hover{border-color:var(--bro)}
+    .step-header{display:flex;align-items:flex-start;gap:1rem;margin-bottom:1.25rem}
+    .step-time{min-width:52px;height:52px;border-radius:12px;background:var(--od);border:1px solid rgba(232,112,64,.2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0}
+    .step-time-min{font-size:.55rem;font-weight:700;color:var(--or);letter-spacing:.08em;text-transform:uppercase;line-height:1}
+    .step-time-range{font-size:.85rem;font-weight:900;color:var(--or);line-height:1.1}
+    .step-meta{}
+    .step-name{font-size:1.1rem;font-weight:800;letter-spacing:-.02em}
+    .step-tool{font-size:.68rem;font-weight:700;color:var(--or);letter-spacing:.1em;text-transform:uppercase;margin-top:.15rem}
+    .step-body{font-size:.88rem;color:var(--wm);line-height:1.65}
+    .step-body p{margin-bottom:.6rem}
+    .step-body strong{color:var(--wh)}
+    .step-list{list-style:none;display:flex;flex-direction:column;gap:.4rem;margin:.75rem 0}
+    .step-list li{font-size:.83rem;color:var(--wm);padding-left:1.4rem;position:relative;line-height:1.55}
+    .step-list li::before{content:'→';position:absolute;left:0;color:var(--or);font-weight:700}
+    .code-block{background:var(--bs);border:1px solid var(--br);border-radius:12px;padding:1.25rem 1.5rem;margin:.75rem 0;font-family:monospace;font-size:.8rem;color:rgba(255,255,255,.7);line-height:1.75;overflow-x:auto}
+    .code-block .key{color:var(--or);font-weight:700}
+    .code-block .val{color:rgba(255,255,255,.85)}
+    .prompt-label{font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--wm);margin-bottom:.4rem}
+    .struct-row{display:flex;align-items:center;gap:.75rem;padding:.5rem 0;border-bottom:1px solid var(--br)}
+    .struct-row:last-child{border-bottom:none}
+    .struct-time{font-size:.7rem;font-weight:700;color:var(--or);min-width:52px}
+    .struct-label{font-size:.82rem;color:var(--wm)}
+    .struct-block{background:var(--bs);border:1px solid var(--br);border-radius:var(--rb);padding:1rem 1.25rem;margin:.75rem 0}
+    .checklist-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:.65rem;margin:1.5rem 0}
+    .check-item{display:flex;align-items:center;gap:.75rem;padding:.85rem 1rem;background:var(--bc);border:1px solid var(--br);border-radius:var(--rb);font-size:.83rem;color:var(--wm);transition:border-color var(--t)}
+    .check-item:hover{border-color:var(--bro);color:var(--wh)}
+    .check-box{width:18px;height:18px;border-radius:5px;border:1.5px solid rgba(232,112,64,.45);background:var(--od);flex-shrink:0}
+    .callout{background:var(--od);border:1px solid rgba(232,112,64,.25);border-radius:var(--r);padding:1.5rem;margin:2rem 0}
+    .callout-title{font-size:.8rem;font-weight:700;color:var(--or);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.75rem}
+    .callout p{font-size:.88rem;color:var(--wm);line-height:1.6;margin-bottom:.4rem}
+    .callout strong{color:var(--wh)}
+    .quote{border-left:3px solid var(--or);padding-left:1.25rem;margin:2rem 0;font-size:1rem;font-style:italic;color:var(--wm);line-height:1.6}
+    .quote cite{display:block;font-size:.75rem;font-style:normal;font-weight:600;color:var(--or);margin-top:.5rem}
+    .cta-box{text-align:center;background:var(--bs);border:1px solid var(--br);border-radius:var(--r);padding:2.5rem;margin-top:3rem}
+    .cta-box h3{font-size:1.35rem;font-weight:800;letter-spacing:-.03em;margin-bottom:.75rem}
+    .cta-box h3 em{font-style:normal;color:var(--or)}
+    .cta-box p{font-size:.88rem;color:var(--wm);margin-bottom:1.5rem;line-height:1.6}
+    .keyword{display:inline-block;background:var(--od);border:1px solid rgba(232,112,64,.3);border-radius:100px;padding:.35rem 1rem;font-size:.85rem;font-weight:700;color:var(--or);letter-spacing:.05em}
+    .back-btn{display:inline-flex;align-items:center;gap:.5rem;margin-top:2rem;font-size:.82rem;font-weight:600;color:var(--wm);border:1px solid var(--br);border-radius:var(--rb);padding:.55rem 1rem;transition:border-color var(--t),color var(--t)}
+    .back-btn:hover{border-color:var(--bro);color:var(--wh)}
+    .footer{border-top:1px solid var(--br);padding:2rem clamp(1.25rem,4vw,3rem);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+    .footer-logo{font-size:.95rem;font-weight:800;letter-spacing:-.03em}
+    .footer-logo span{color:var(--or)}
+    .footer-copy{font-size:.73rem;color:var(--wm)}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+    .hero{animation:fadeUp .5s ease both}
+    ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--black)}::-webkit-scrollbar-thumb{background:var(--or);border-radius:100px}
+    @media(max-width:600px){.overview-grid{grid-template-columns:repeat(2,1fr)}.checklist-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+
+<header class="nav" role="banner">
+  <div class="nav-logo">Roger<span>.IA</span></div>
+  <a href="../arsenal.html" class="nav-back" id="nav-back">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Volver al Arsenal
+  </a>
+</header>
+
+<div class="hero">
+  <nav class="breadcrumb" aria-label="Ruta de navegación">
+    <a href="../index.html">Inicio</a>
+    <span>›</span>
+    <a href="../arsenal.html">Arsenal</a>
+    <span>›</span>
+    <span style="color:var(--wh)">De Idea a Video en 30 Min</span>
+  </nav>
+  <div class="label">Workflow · Producción</div>
+  <h1>De Idea a Video en <em>30 Min</em></h1>
+  <p class="sub">Workflow completo paso a paso para convertir una idea en video publicado en redes sociales en solo 30 minutos.</p>
+</div>
+
+<hr class="divider"/>
+
+<main class="content" id="main">
+
+  <div class="overview-grid" aria-label="Resumen de fases del workflow">
+    <div class="overview-card">
+      <div class="ov-time">Min 0–5</div>
+      <div class="ov-tool">Claude</div>
+      <div class="ov-task">Guion completo listo para grabar</div>
+    </div>
+    <div class="overview-card">
+      <div class="ov-time">Min 5–10</div>
+      <div class="ov-tool">Gemini</div>
+      <div class="ov-task">Imagen de referencia generada</div>
+    </div>
+    <div class="overview-card">
+      <div class="ov-time">Min 10–20</div>
+      <div class="ov-tool">Higgsfield</div>
+      <div class="ov-task">Video animado en vertical</div>
+    </div>
+    <div class="overview-card">
+      <div class="ov-time">Min 20–30</div>
+      <div class="ov-tool">CapCut</div>
+      <div class="ov-task">Edición final y exportación</div>
+    </div>
+  </div>
+
+  <h2>El <em>Workflow</em> Completo</h2>
+
+  <div class="step" id="paso-guion">
+    <div class="step-header">
+      <div class="step-time">
+        <span class="step-time-min">min</span>
+        <span class="step-time-range">0–5</span>
+      </div>
+      <div class="step-meta">
+        <div class="step-name">Guion con Claude</div>
+        <div class="step-tool">Herramienta · Claude.ai</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <p>Un buen guion es la diferencia entre un video que se ve completo y uno que se cierra a los 3 segundos. Claude entiende la estructura de video corto mejor que cualquier otra IA.</p>
+      <div class="prompt-label">Prompt exacto</div>
+      <div class="code-block"><span class="key">"</span><span class="val">Crea un guion de 45 segundos para video vertical sobre [tema]</span><span class="key">"</span></div>
+      <p><strong>Estructura que debe tener el guion:</strong></p>
+      <div class="struct-block" aria-label="Estructura del guion">
+        <div class="struct-row">
+          <span class="struct-time">0 – 3s</span>
+          <span class="struct-label"><strong style="color:var(--wh)">Hook</strong> — la frase que detiene el scroll</span>
+        </div>
+        <div class="struct-row">
+          <span class="struct-time">3 – 8s</span>
+          <span class="struct-label"><strong style="color:var(--wh)">Intro ancla</strong> — por qué debe seguir viendo</span>
+        </div>
+        <div class="struct-row">
+          <span class="struct-time">8 – 38s</span>
+          <span class="struct-label"><strong style="color:var(--wh)">Valor</strong> — el contenido real que prometiste</span>
+        </div>
+        <div class="struct-row">
+          <span class="struct-time">38 – 45s</span>
+          <span class="struct-label"><strong style="color:var(--wh)">CTA</strong> — qué quieres que haga el espectador</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step" id="paso-imagen">
+    <div class="step-header">
+      <div class="step-time">
+        <span class="step-time-min">min</span>
+        <span class="step-time-range">5–10</span>
+      </div>
+      <div class="step-meta">
+        <div class="step-name">Imagen de referencia con Gemini</div>
+        <div class="step-tool">Herramienta · Gemini Imagen 3</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <p>Gemini con Imagen 3 es el mejor generador de imágenes integrado en chat de IA. Para video de IA, una imagen fotorrealista con buena iluminación es la base perfecta para animar con Higgsfield.</p>
+      <div class="prompt-label">Prompt exacto</div>
+      <div class="code-block"><span class="key">"</span><span class="val">Genera una imagen [descripción] estilo cinematográfico, iluminación dramática, composición centrada</span><span class="key">"</span></div>
+      <ul class="step-list">
+        <li>Sé específico con la descripción — incluye colores, ambiente y tipo de encuadre</li>
+        <li>Pide composición centrada para que la animación de Higgsfield se vea bien en vertical</li>
+        <li>Exportar en la resolución más alta disponible antes de pasar al siguiente paso</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step" id="paso-animacion">
+    <div class="step-header">
+      <div class="step-time">
+        <span class="step-time-min">min</span>
+        <span class="step-time-range">10–20</span>
+      </div>
+      <div class="step-meta">
+        <div class="step-name">Animación con Higgsfield</div>
+        <div class="step-tool">Herramienta · Higgsfield · Kling 3.0</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <p>Higgsfield convierte tu imagen estática en un clip cinematográfico. Con Kling 3.0 el movimiento es fluido y la calidad es indistinguible de video real grabado.</p>
+      <ul class="step-list">
+        <li>Subir la imagen de referencia generada en el paso anterior</li>
+        <li><strong>Duration:</strong> 3 segundos — suficiente para movimiento, no hay desperdicio</li>
+        <li><strong>Aspect ratio:</strong> 9:16 — vertical obligatorio para Reels e Instagram</li>
+        <li><strong>Quality:</strong> High — no hay razón para bajar la calidad aquí</li>
+      </ul>
+      <div class="code-block">
+        <span class="key">Duration  </span><span class="val">3s</span><br>
+        <span class="key">Ratio     </span><span class="val">9:16 (vertical)</span><br>
+        <span class="key">Quality   </span><span class="val">High</span>
+      </div>
+      <p>El tiempo de generación varía entre 2 y 6 minutos. Mientras espera, prepara CapCut en el siguiente paso.</p>
+    </div>
+  </div>
+
+  <div class="step" id="paso-edicion">
+    <div class="step-header">
+      <div class="step-time">
+        <span class="step-time-min">min</span>
+        <span class="step-time-range">20–30</span>
+      </div>
+      <div class="step-meta">
+        <div class="step-name">Edición final con CapCut</div>
+        <div class="step-tool">Herramienta · CapCut</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <p>CapCut es donde el clip cobra vida completa. El objetivo es sumar capas que refuerzan el mensaje sin distraer del contenido.</p>
+      <ul class="step-list">
+        <li>Importar el video exportado de Higgsfield como clip base</li>
+        <li>Agregar texto con los ganchos clave del guion — tipografía limpia y contraste alto</li>
+        <li>Música de fondo baja en volumen (–20dB) para no competir con la voz</li>
+        <li>Transiciones sutiles entre clips si usas más de uno</li>
+        <li>Exportar en <strong>1080 × 1920</strong> — resolución estándar para Reels e Instagram</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>Checklist <em>Final</em></h2>
+  <p>Antes de publicar, verifica que cada punto esté completo. Un video publicado a medias tiene el doble de probabilidad de bajo alcance.</p>
+
+  <div class="checklist-grid" aria-label="Checklist de publicación">
+    <div class="check-item">
+      <div class="check-box" aria-hidden="true"></div>
+      <span>Guion revisado y aprobado</span>
+    </div>
+    <div class="check-item">
+      <div class="check-box" aria-hidden="true"></div>
+      <span>Imagen generada y descargada</span>
+    </div>
+    <div class="check-item">
+      <div class="check-box" aria-hidden="true"></div>
+      <span>Video animado y exportado</span>
+    </div>
+    <div class="check-item">
+      <div class="check-box" aria-hidden="true"></div>
+      <span>Edición completada en CapCut</span>
+    </div>
+    <div class="check-item">
+      <div class="check-box" aria-hidden="true"></div>
+      <span>Video exportado en formato vertical</span>
+    </div>
+    <div class="check-item">
+      <div class="check-box" aria-hidden="true"></div>
+      <span>Publicado en redes sociales</span>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-title">⚡ El cuello de botella real</div>
+    <p><strong>Higgsfield tarda entre 2 y 6 minutos en generar el clip.</strong> Ese es el único momento donde esperas.</p>
+    <p>Úsalo bien: mientras genera, abre CapCut, prepara el proyecto y define los textos del guion que vas a sobreponer. Cuando Higgsfield termina, ya tienes el resto listo.</p>
+  </div>
+
+  <div class="cta-box">
+    <h3>¿Quieres ver este workflow en un <em>video real</em>?</h3>
+    <p>Escríbeme a Instagram y te mando el proceso completo grabado paso a paso.</p>
+    <div class="keyword">Escribe FLOW a @roger.ia_</div>
+  </div>
+
+  <div style="text-align:center">
+    <a href="../arsenal.html" class="back-btn" id="back-arsenal">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Volver al Arsenal
+    </a>
+  </div>
+</main>
+
+<footer class="footer" role="contentinfo">
+  <div class="footer-logo">Roger<span>.IA</span></div>
+  <p class="footer-copy">La IA no es complicada, te la complican. · @roger.ia_ · 2026</p>
+</footer>
+
+</body>
+</html>

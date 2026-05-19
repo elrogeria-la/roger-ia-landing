@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roger.IA — IA que por fin entiendes</title>
+    <meta name="description" content="Roger.IA: recursos, herramientas y workflows de IA para dueños de negocio en México y LATAM. Sin tecnicismos. Sin agencias. Resultados reales." />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        /* ─── DESIGN TOKENS ─── */
+        :root {
+            --font-display: 'Space Grotesk', system-ui, sans-serif;
+            --font-mono:    'JetBrains Mono', 'Courier New', monospace;
+            --w-light: 300;
+            --w-reg:   400;
+            --w-med:   500;
+            --w-bold:  700;
+
+            --orange:        #E87040;
+            --orange-dim:    rgba(232,112,64,0.10);
+            --orange-glow:   rgba(232,112,64,0.22);
+            --orange-border: rgba(232,112,64,0.18);
+
+            --bg:       #080808;
+            --s1:       #0f0f0f;
+            --s2:       #151515;
+            --s3:       #1c1c1c;
+
+            --border:   rgba(255,255,255,0.06);
+            --text:     #f0f0f0;
+            --text-2:   #888;
+            --text-3:   #3a3a3a;
+
+            --ease: cubic-bezier(0.16,1,0.3,1);
+        }
+
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior:smooth; }
+
+        body {
+            font-family: var(--font-display);
+            font-weight: var(--w-light);
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        /* Film grain overlay */
+        body::after {
+            content:'';
+            position:fixed; inset:0; z-index:9999;
+            pointer-events:none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            opacity:0.022;
+            mix-blend-mode:overlay;
+        }
+
+        ::-webkit-scrollbar { width:4px; }
+        ::-webkit-scrollbar-track { background:var(--bg); }
+        ::-webkit-scrollbar-thumb { background:var(--s3); border-radius:2px; }
+        ::-webkit-scrollbar-thumb:hover { background:var(--orange); }
+
+        /* ─── ANIMATIONS ─── */
+        @keyframes fade-up  { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes fade-in  { from{opacity:0} to{opacity:1} }
+        @keyframes live-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.6)} }
+        @keyframes blink    { from,to{opacity:0} 50%{opacity:1} }
+        @keyframes float-1  { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }
+        @keyframes float-2  { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
+        @keyframes float-3  { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-9px)} }
+        @keyframes ring     { 0%{transform:scale(1);opacity:.55} 100%{transform:scale(1.14);opacity:0} }
+        @keyframes ul-in    { to{transform:scaleX(1)} }
+        @keyframes marquee  { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+        @keyframes live-g   { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+        /* Page-load stagger */
+        .anim { opacity:0; animation:fade-up .72s var(--ease) both; }
+        .a0  { animation-delay:.06s }
+        .a1  { animation-delay:.18s }
+        .a2  { animation-delay:.32s }
+        .a3  { animation-delay:.46s }
+        .a4  { animation-delay:.62s }
+        .a5  { animation-delay:.78s }
+
+        /* Scroll reveal — blur-fade variant */
+        .reveal {
+            opacity:0; transform:translateY(14px); filter:blur(6px);
+            transition:opacity .65s var(--ease), transform .65s var(--ease), filter .65s var(--ease);
+        }
+        .reveal.visible { opacity:1; transform:translateY(0); filter:blur(0); }
+        .rd1{transition-delay:.08s} .rd2{transition-delay:.18s} .rd3{transition-delay:.3s} .rd4{transition-delay:.44s}
+
+        /* ─── NAVIGATION ─── */
+        nav {
+            position:fixed; top:0; left:0; right:0; z-index:100;
+            height:54px;
+            background:rgba(8,8,8,.9);
+            backdrop-filter:blur(18px);
+            -webkit-backdrop-filter:blur(18px);
+            border-bottom:1px solid var(--border);
+        }
+        .nav-inner {
+            max-width:1440px; margin:0 auto; padding:0 32px;
+            height:100%; display:flex; justify-content:space-between; align-items:center;
+        }
+        .nav-brand {
+            font-weight:var(--w-bold); font-size:.98rem;
+            letter-spacing:-.03em; color:var(--text); text-decoration:none;
+        }
+        .nav-brand em { color:var(--orange); font-style:normal; }
+        .nav-right { display:flex; align-items:center; gap:14px; }
+
+        .nav-cta-btn {
+            display:inline-flex; align-items:center; gap:6px;
+            background:var(--orange-dim); color:var(--orange);
+            border:1px solid var(--orange-border);
+            padding:6px 14px; border-radius:6px;
+            font-size:.77rem; font-weight:var(--w-med);
+            text-decoration:none; letter-spacing:.01em;
+            transition:all .25s var(--ease);
+            opacity:0; pointer-events:none; transform:translateY(-4px);
+        }
+        .nav-cta-btn.visible { opacity:1; pointer-events:all; transform:translateY(0); }
+        .nav-cta-btn:hover { background:rgba(232,112,64,.17); }
+
+        /* Arsenal nav button */
+        .nav-arsenal {
+            display:inline-flex; align-items:center; gap:6px;
+            background:var(--orange); color:#fff;
+            border:1px solid var(--orange);
+            padding:6px 14px; border-radius:6px;
+            font-size:.77rem; font-weight:var(--w-med);
+            text-decoration:none; letter-spacing:.01em;
+            transition:all .25s var(--ease);
+        }
+        .nav-arsenal:hover { background:#f07845; transform:translateY(-1px); }
+
+        .nav-ig {
+            display:flex; align-items:center; gap:7px;
+            color:var(--text-2); font-size:.82rem;
+            text-decoration:none; transition:color .2s;
+        }
+        .nav-ig:hover { color:var(--orange); }
+
+        /* ─── HERO ─── */
+        .hero {
+            min-height:100dvh; padding-top:54px;
+            position:relative; overflow:hidden;
+            display:flex; align-items:center;
+        }
+
+        /* Perspective grid */
+        .hero::before {
+            content:'';
+            position:absolute; inset:0;
+            background-image:
+                linear-gradient(rgba(232,112,64,.028) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(232,112,64,.028) 1px, transparent 1px);
+            background-size:70px 70px;
+            mask-image:radial-gradient(ellipse at 65% 40%, black 0%, transparent 68%);
+            -webkit-mask-image:radial-gradient(ellipse at 65% 40%, black 0%, transparent 68%);
+        }
+
+        /* Ambient glow nodes */
+        .glow-a {
+            position:absolute; border-radius:50%; pointer-events:none;
+            background:radial-gradient(circle, rgba(232,112,64,.065) 0%, transparent 65%);
+            width:900px; height:900px; top:-380px; left:-360px;
+        }
+        .glow-b {
+            position:absolute; border-radius:50%; pointer-events:none;
+            background:radial-gradient(circle, rgba(232,112,64,.04) 0%, transparent 65%);
+            width:680px; height:680px; bottom:-280px; right:-180px;
+        }
+
+        /* "IA" watermark */
+        .wm {
+            position:absolute; right:-3%; top:50%; transform:translateY(-50%);
+            font-size:clamp(200px,28vw,440px);
+            font-weight:var(--w-bold);
+            color:transparent;
+            -webkit-text-stroke:1px rgba(232,112,64,.065);
+            line-height:.9; letter-spacing:-.06em;
+            pointer-events:none; user-select:none; z-index:0;
+            animation:fade-in 1.4s var(--ease) .4s both;
+        }
+
+        .hero-inner {
+            max-width:1440px; margin:0 auto;
+            padding:72px 32px; width:100%;
+            position:relative; z-index:1;
+        }
+        .hero-grid {
+            display:grid; grid-template-columns:1fr 1fr;
+            gap:80px; align-items:center;
+        }
+
+        /* ─── PILL TAG ─── */
+        .tag-pill {
+            display:inline-flex; align-items:center; gap:8px;
+            background:var(--orange-dim);
+            border:1px solid var(--orange-border);
+            color:var(--orange); padding:5px 14px; border-radius:100px;
+            font-size:.72rem; font-weight:var(--w-med);
+            letter-spacing:.05em; text-transform:uppercase;
+        }
+        .ldot {
+            width:6px; height:6px; border-radius:50%;
+            background:var(--orange);
+            animation:live-dot 2s ease-in-out infinite;
+        }
+
+        /* ─── HEADLINE ─── */
+        .h1 {
+            font-size:clamp(2.7rem,5.2vw,4.9rem);
+            font-weight:var(--w-bold);
+            line-height:1.03; letter-spacing:-.05em;
+        }
+        .h1 .acc { color:var(--orange); }
+        .h1 .acc-ul { position:relative; display:inline-block; }
+        .h1 .acc-ul::after {
+            content:''; position:absolute; bottom:-3px; left:0;
+            width:100%; height:2px; background:var(--orange);
+            transform:scaleX(0); transform-origin:left;
+            animation:ul-in .5s var(--ease) .95s forwards;
+        }
+
+        /* ─── CTA BUTTONS ─── */
+        .btn-primary {
+            display:inline-flex; align-items:center; gap:9px;
+            background:var(--orange); color:#fff;
+            padding:13px 26px; border-radius:8px;
+            font-weight:var(--w-med); font-size:.92rem;
+            text-decoration:none; letter-spacing:.01em;
+            transition:all .3s var(--ease);
+            box-shadow:inset 0 1px 0 rgba(255,255,255,.14);
+            position:relative; overflow:hidden;
+        }
+        .btn-primary::after {
+            content:''; position:absolute; inset:0;
+            background:linear-gradient(105deg, transparent 35%, rgba(255,255,255,.22) 50%, transparent 65%);
+            background-size:200% 100%;
+            background-position:200% 0;
+            animation:btn-shimmer 3.8s ease-in-out 1.2s infinite;
+            border-radius:inherit;
+            pointer-events:none;
+        }
+        @keyframes btn-shimmer {
+            0%   { background-position:200% 0; }
+            100% { background-position:-200% 0; }
+        }
+        .btn-primary::before {
+            content:''; position:absolute; inset:-3px;
+            border-radius:11px; border:1px solid var(--orange);
+            opacity:0;
+            animation:ring 2.8s ease-in-out 1.4s infinite;
+        }
+        .btn-primary:hover {
+            background:#f07845; transform:translateY(-2px);
+            box-shadow:0 10px 32px rgba(232,112,64,.36), 0 2px 8px rgba(232,112,64,.22), inset 0 1px 0 rgba(255,255,255,.14);
+        }
+        .btn-primary:active { transform:translateY(0) scale(.98); }
+
+        .btn-ghost {
+            display:inline-flex; align-items:center; gap:7px;
+            color:var(--text-2); font-size:.87rem; font-weight:var(--w-light);
+            text-decoration:none; transition:all .2s var(--ease);
+        }
+        .btn-ghost:hover { color:var(--orange); gap:11px; }
+
+        .friction { font-size:.71rem; color:var(--text-3); letter-spacing:.02em; margin-top:13px; }
+        .friction span { color:var(--text-2); }
+
+        /* ─── STATS ─── */
+        .stats {
+            display:flex; align-items:center; gap:28px;
+            padding-top:32px; border-top:1px solid var(--border);
+        }
+        .stat-n {
+            font-family:var(--font-mono); font-size:2.1rem;
+            font-weight:var(--w-bold); line-height:1; letter-spacing:-.05em;
+        }
+        .stat-n.stat-accent { text-shadow:0 0 24px rgba(232,112,64,.35); }
+        .stat-l { font-size:.68rem; color:var(--text-2); margin-top:6px; letter-spacing:.02em; }
+        .sdiv { width:1px; height:34px; background:var(--border); }
+
+        /* ─── TERMINAL ─── */
+        .term-wrap { position:relative; }
+        .term-card {
+            background:var(--s1);
+            border:1px solid var(--border);
+            border-radius:16px; overflow:hidden;
+            box-shadow:
+                inset 0 1px 0 rgba(255,255,255,.04),
+                0 0 0 1px rgba(232,112,64,.06),
+                0 40px 80px rgba(0,0,0,.7),
+                0 0 60px rgba(232,112,64,.04);
+        }
+        .term-bar {
+            padding:11px 18px;
+            background:rgba(255,255,255,.02);
+            border-bottom:1px solid var(--border);
+            display:flex; align-items:center; gap:7px;
+        }
+        .tdot { width:10px; height:10px; border-radius:50%; }
+        .td-r{background:#ff5f56} .td-y{background:#ffbd2e} .td-g{background:#27c93f}
+        .t-title { margin-left:6px; font-family:var(--font-mono); font-size:.7rem; color:var(--text-2); }
+        .term-body {
+            padding:22px; font-family:var(--font-mono);
+            font-size:.79rem; min-height:264px; line-height:1.72;
+        }
+        .t-cmt { color:var(--text-3); margin-bottom:12px; }
+
+        /* Float chips */
+        .fchip {
+            position:absolute;
+            background:var(--s2); border:1px solid var(--border);
+            border-radius:8px; padding:8px 14px;
+            font-size:.73rem; color:var(--text-2);
+            font-family:var(--font-mono);
+            box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+            z-index:2;
+        }
+        .fc1 { top:-15px; right:8px; animation:float-1 4s ease-in-out infinite; }
+        .fc2 { bottom:42px; right:-18px; animation:float-2 5.5s ease-in-out infinite .7s; }
+        .fc3 { top:40%; left:-22px; animation:float-3 3.8s ease-in-out infinite 1.3s; }
+
+        /* Live badge */
+        .live-badge {
+            position:absolute; bottom:-14px; left:50%; transform:translateX(-50%);
+            background:var(--s1); border:1px solid var(--orange-border);
+            border-radius:100px; padding:7px 15px;
+            display:flex; align-items:center; gap:8px;
+            white-space:nowrap;
+            box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+        }
+        .live-badge span { font-size:.69rem; color:var(--text-2); }
+        .lg {
+            width:6px; height:6px; border-radius:50%; background:#27c93f;
+            box-shadow:0 0 6px rgba(39,201,63,.5);
+            animation:live-g 2s ease-in-out infinite;
+        }
+        .cursor { animation:blink .8s step-end infinite; }
+
+        /* ─── MARQUEE ─── */
+        .mq-wrap {
+            overflow:hidden;
+            border-top:1px solid var(--border);
+            border-bottom:1px solid var(--border);
+            padding:13px 0; background:var(--s1);
+        }
+        .mq-track {
+            display:flex; width:max-content;
+            animation:marquee 30s linear infinite;
+        }
+        .mq-wrap:hover .mq-track { animation-play-state:paused; }
+        .mq-item {
+            display:inline-flex; align-items:center; gap:18px;
+            padding:0 18px;
+            font-size:.7rem; font-weight:var(--w-med);
+            letter-spacing:.12em; text-transform:uppercase;
+            color:var(--text-2); white-space:nowrap;
+        }
+        .mq-sep { width:4px; height:4px; border-radius:50%; background:var(--orange); opacity:.65; }
+
+        /* ─── SECTIONS ─── */
+        .wrap { max-width:1440px; margin:0 auto; padding:0 32px; }
+        .sec-label {
+            font-family:var(--font-mono); font-size:.67rem; font-weight:var(--w-reg);
+            letter-spacing:.14em; text-transform:uppercase; color:var(--orange);
+            margin-bottom:14px;
+        }
+        .sec-h2 {
+            font-size:clamp(1.9rem,3.8vw,3.2rem);
+            font-weight:var(--w-bold); letter-spacing:-.04em; line-height:1.06;
+        }
+
+        /* ─── PROBLEM STRIP ─── */
+        .problem-strip {
+            padding: clamp(3.5rem, 7vw, 5.5rem) 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.25rem;
+            margin-top: 2.5rem;
+        }
+        .problem-item {
+            padding: 1.5rem;
+            background: var(--s1);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            transition: border-color .35s var(--ease), transform .35s var(--ease);
+        }
+        .problem-item:hover { border-color: var(--orange-border); transform: translateY(-3px); }
+        .problem-item-icon { font-size: 1.75rem; margin-bottom: .75rem; }
+        .problem-item h3 {
+            font-size: .95rem; font-weight: var(--w-bold);
+            letter-spacing: -.02em; margin-bottom: .4rem;
+        }
+        .problem-item p {
+            font-size: .82rem; color: var(--text-2);
+            line-height: 1.55; font-weight: var(--w-light);
+        }
+
+        /* ─── TAGLINE ─── */
+        .tagline-section {
+            padding: clamp(3.5rem, 7vw, 5.5rem) 0;
+            text-align: center;
+        }
+        .tagline-quote {
+            font-size: clamp(1.5rem, 3.6vw, 2.6rem);
+            font-weight: var(--w-bold);
+            letter-spacing: -.04em; line-height: 1.15;
+            max-width: 720px; margin: 0 auto 1.25rem;
+            color: var(--text);
+        }
+        .tagline-quote em { font-style: normal; color: var(--orange); }
+        .tagline-author {
+            font-size: .85rem; color: var(--text-2); font-weight: var(--w-light);
+        }
+        .tagline-author strong { color: var(--orange); font-weight: var(--w-med); }
+
+        /* ─── ABOUT ─── */
+        .principle {
+            padding:24px 0; border-top:1px solid var(--border);
+            transition:padding-left .28s var(--ease), background .2s;
+            border-radius:0 8px 8px 0;
+        }
+        .principle:last-child { border-bottom:1px solid var(--border); }
+        .principle:hover { padding-left:10px; background:rgba(255,255,255,.018); }
+        .principle:hover .pnum { color:var(--orange); }
+        .pnum {
+            font-family:var(--font-mono); font-size:.67rem;
+            color:var(--text-3); padding-top:3px; min-width:20px;
+            transition:color .2s var(--ease);
+        }
+
+        /* ─── ARSENAL PREVIEW ─── */
+        .arsenal-preview {
+            padding: clamp(3.5rem, 7vw, 5.5rem) 0;
+            border-top: 1px solid var(--border);
+            position: relative; overflow: hidden;
+        }
+        .arsenal-preview-header {
+            display: flex; align-items: flex-end;
+            justify-content: space-between; flex-wrap: wrap;
+            gap: 1.5rem; margin-bottom: 2.5rem;
+        }
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        .preview-card {
+            background: var(--s1);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 1.25rem 1rem 1rem;
+            display: flex; flex-direction: column; gap: .5rem;
+            cursor: pointer;
+            transition: border-color .35s var(--ease), transform .35s var(--ease), background .35s var(--ease);
+            position: relative; overflow: hidden;
+            text-decoration: none; color: inherit;
+        }
+        .preview-card::before {
+            content: ''; position: absolute;
+            top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--orange), transparent);
+            opacity: 0; transition: opacity .35s var(--ease);
+        }
+        .preview-card:hover::before { opacity: 1; }
+        .preview-card:hover {
+            border-color: var(--orange-border);
+            transform: translateY(-4px);
+            background: var(--s2);
+        }
+        .preview-card-icon { font-size: 1.8rem; }
+        .preview-card-tag {
+            font-size: .6rem; font-weight: var(--w-med);
+            letter-spacing: .1em; text-transform: uppercase; color: var(--orange);
+        }
+        .preview-card-title {
+            font-size: .88rem; font-weight: var(--w-bold);
+            line-height: 1.3; letter-spacing: -.02em; color: var(--text);
+        }
+        .preview-card-arrow {
+            margin-top: auto; display: flex; align-items: center; gap: .3rem;
+            font-size: .75rem; font-weight: var(--w-med); color: var(--text-2);
+            transition: color .35s var(--ease), gap .35s var(--ease);
+        }
+        .preview-card:hover .preview-card-arrow { color: var(--orange); gap: .5rem; }
+        .btn-ver-todos {
+            display: inline-flex; align-items: center; gap: 7px;
+            color: var(--text-2); font-size: .87rem; font-weight: var(--w-light);
+            text-decoration: none; border: 1px solid var(--border);
+            border-radius: 8px; padding: 8px 16px;
+            transition: color .25s var(--ease), border-color .25s var(--ease), gap .25s var(--ease);
+            white-space: nowrap;
+        }
+        .btn-ver-todos:hover { color: var(--orange); border-color: var(--orange-border); gap: 11px; }
+
+        /* ─── PRE-FOOTER ─── */
+        .prefooter {
+            padding:96px 32px; text-align:center;
+            background:var(--s1);
+            border-top:1px solid var(--border);
+            border-bottom:1px solid var(--border);
+            position:relative; overflow:hidden;
+        }
+        .prefooter::before {
+            content:''; position:absolute; inset:0;
+            background:
+                radial-gradient(ellipse at 50% 120%, rgba(232,112,64,.14) 0%, transparent 58%),
+                radial-gradient(ellipse at 20% 80%, rgba(232,112,64,.04) 0%, transparent 40%),
+                radial-gradient(ellipse at 80% 80%, rgba(232,112,64,.04) 0%, transparent 40%);
+            pointer-events:none;
+        }
+
+        /* ─── FOOTER ─── */
+        .footer-inner {
+            max-width:1440px; margin:0 auto; padding:34px 32px;
+            display:flex; justify-content:space-between; align-items:center;
+        }
+
+        /* ─── MOBILE STICKY ─── */
+        .mob-sticky {
+            display:none;
+            position:fixed; bottom:0; left:0; right:0; z-index:90;
+            background:rgba(8,8,8,.96);
+            backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
+            border-top:1px solid var(--border);
+            padding:11px 20px 17px;
+        }
+
+        .grad-line {
+            height:1px;
+            background:linear-gradient(90deg, transparent, rgba(232,112,64,.05) 25%, rgba(232,112,64,.18) 50%, rgba(232,112,64,.05) 75%, transparent);
+        }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width:768px) {
+            .hero-grid        { grid-template-columns:1fr !important; }
+            .term-wrap        { display:none; }
+            .wm               { display:none; }
+            .about-grid       { grid-template-columns:1fr !important; gap:52px !important; }
+            .sch-grid         { grid-template-columns:1fr !important; gap:16px !important; }
+            .footer-inner     { flex-direction:column !important; gap:14px; text-align:center; }
+            .mob-sticky       { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+            body              { padding-bottom:74px; }
+            .mq-wrap          { display:none; }
+            .nav-inner        { padding:0 20px; }
+            .nav-cta-btn      { display:none !important; }
+            .nav-arsenal      { display:none !important; }
+            .hero-inner       { padding:56px 20px; }
+            .wrap             { padding:0 20px; }
+            .prefooter        { padding:72px 20px; }
+            .problem-grid     { grid-template-columns:1fr 1fr; }
+            .preview-grid     { grid-template-columns:1fr 1fr; }
+        }
+
+        @media (min-width:640px) {
+            .preview-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+
+        /* ─── FOCUS STATES ─── */
+        :focus-visible {
+            outline:2px solid var(--orange);
+            outline-offset:3px;
+            border-radius:4px;
+        }
+
+        /* ─── ABOUT SECTION WATERMARK ─── */
+        .about-num-watermark {
+            position:absolute; right:-1%;
+            font-size:clamp(80px,10vw,160px);
+            font-weight:var(--w-bold);
+            color:transparent;
+            -webkit-text-stroke:1px rgba(232,112,64,.035);
+            line-height:1; letter-spacing:-.06em;
+            pointer-events:none; user-select:none;
+            top:50%; transform:translateY(-50%);
+        }
+
+        @media (prefers-reduced-motion:reduce) {
+            .anim,.reveal { animation:none !important; transition:none !important; opacity:1 !important; transform:none !important; filter:none !important; }
+            .btn-primary::before, .btn-primary::after { display:none; }
+            .mq-track { animation:none !important; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ─── NAV ─── -->
+<nav>
+    <div class="nav-inner">
+        <a href="/" class="nav-brand">Roger<em>.IA</em></a>
+        <div class="nav-right">
+            <a href="#arsenal" class="nav-cta-btn" id="nav-cta">
+                Stack Gratis
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+            <a href="arsenal.html" class="nav-arsenal">
+                ⚡ Arsenal
+            </a>
+            <a href="https://instagram.com/roger.ia_" target="_blank" rel="noopener" class="nav-ig">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                @roger.ia_
+            </a>
+        </div>
+    </div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+    <div class="glow-a"></div>
+    <div class="glow-b"></div>
+    <span class="wm" aria-hidden="true">IA</span>
+
+    <div class="hero-inner">
+        <div class="hero-grid">
+
+            <!-- Left: copy -->
+            <div>
+                <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:28px;">
+                    <div class="tag-pill anim a0" style="width:fit-content;">
+                        <span class="ldot"></span>
+                        Aprendo IA en público
+                    </div>
+                </div>
+
+                <h1 class="h1 anim a1" style="margin-bottom:22px;">
+                    La IA no es<br>
+                    complicada,<br>
+                    <span class="acc"><span class="acc-ul">te la complican.</span></span>
+                </h1>
+
+                <p class="anim a2" style="font-size:1.05rem; line-height:1.76; color:var(--text-2); max-width:450px; margin-bottom:36px; font-weight:var(--w-light);">
+                    Comparto lo que me funciona semana a semana: herramientas reales, prompts que funcionan y flujos sin código. Empieza gratis con mi arsenal de recursos.
+                </p>
+
+                <div class="anim a3">
+                    <div style="display:flex; align-items:center; gap:20px; flex-wrap:wrap;">
+                        <a href="arsenal.html" class="btn-primary" id="hero-arsenal-btn">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            Recursos gratuitos IA
+                        </a>
+                        <a href="https://instagram.com/roger.ia_" target="_blank" rel="noopener" class="btn-ghost">
+                            Seguir en Instagram
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        </a>
+                    </div>
+                    <p class="friction">Sin registro · Sin email</p>
+                </div>
+
+                <div class="stats anim a4" style="margin-top:48px;">
+                    <div>
+                        <div class="stat-n" data-counter="12">12</div>
+                        <div class="stat-l">Herramientas nuevas cada semana</div>
+                    </div>
+                    <div class="sdiv"></div>
+                    <div>
+                        <div class="stat-n" data-counter="1">1</div>
+                        <div class="stat-l">año automatizando negocios</div>
+                    </div>
+                    <div class="sdiv"></div>
+                    <div>
+                        <div class="stat-n stat-accent" data-counter="78" data-suffix="%" style="color:var(--orange);">78%</div>
+                        <div class="stat-l">de negocios ya usan IA</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: terminal -->
+            <div class="term-wrap anim a2">
+                <div class="fchip fc1">ChatGPT</div>
+                <div class="fchip fc2">Claude</div>
+                <div class="fchip fc3">Midjourney</div>
+
+                <div class="term-card">
+                    <div class="term-bar">
+                        <div class="tdot td-r"></div>
+                        <div class="tdot td-y"></div>
+                        <div class="tdot td-g"></div>
+                        <span class="t-title">prompt.txt</span>
+                    </div>
+                    <div class="term-body">
+                        <div class="t-cmt">// Pregunta real de un seguidor</div>
+                        <div id="terminal-text"></div>
+                    </div>
+                </div>
+
+                <div class="live-badge">
+                    <span class="lg"></span>
+                    <span>Compartiendo en tiempo real</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ─── MARQUEE ─── -->
+<div class="mq-wrap" aria-hidden="true">
+    <div class="mq-track">
+        <span class="mq-item">La IA no es complicada<span class="mq-sep"></span></span>
+        <span class="mq-item">Te la complican<span class="mq-sep"></span></span>
+        <span class="mq-item">Aprendo en público<span class="mq-sep"></span></span>
+        <span class="mq-item">12 herramientas gratis<span class="mq-sep"></span></span>
+        <span class="mq-item">Sin tecnicismos<span class="mq-sep"></span></span>
+        <span class="mq-item">Resultados reales<span class="mq-sep"></span></span>
+        <span class="mq-item">México · LATAM<span class="mq-sep"></span></span>
+        <span class="mq-item">La IA no es complicada<span class="mq-sep"></span></span>
+        <span class="mq-item">Te la complican<span class="mq-sep"></span></span>
+        <span class="mq-item">Aprendo en público<span class="mq-sep"></span></span>
+        <span class="mq-item">12 herramientas gratis<span class="mq-sep"></span></span>
+        <span class="mq-item">Sin tecnicismos<span class="mq-sep"></span></span>
+        <span class="mq-item">Resultados reales<span class="mq-sep"></span></span>
+        <span class="mq-item">México · LATAM<span class="mq-sep"></span></span>
+    </div>
+</div>
+
+<!-- ─── EL PROBLEMA ─── -->
+<div class="problem-strip">
+    <div class="wrap">
+        <p class="sec-label reveal">El problema</p>
+        <h2 class="sec-h2 reveal rd1">¿Te suena <span style="color:var(--orange)">esto?</span></h2>
+        <p class="reveal rd2" style="color:var(--text-2); font-size:1rem; line-height:1.76; font-weight:var(--w-light); margin-top:.5rem; max-width:520px;">
+            La IA existe, pero nadie te enseña a usarla para tu negocio real.
+        </p>
+        <div class="problem-grid">
+            <div class="problem-item reveal rd1">
+                <div class="problem-item-icon">😵</div>
+                <h3>Demasiadas herramientas</h3>
+                <p>ChatGPT, Claude, Gemini, Copilot… y no sabes cuál usar para qué.</p>
+            </div>
+            <div class="problem-item reveal rd2">
+                <div class="problem-item-icon">⏱️</div>
+                <h3>Sin tiempo para aprender</h3>
+                <p>Cursos de 40 horas para cosas que podrías aplicar en 30 minutos.</p>
+            </div>
+            <div class="problem-item reveal rd3">
+                <div class="problem-item-icon">💸</div>
+                <h3>Gastando sin retorno</h3>
+                <p>Pagas suscripciones que no usas porque nadie te enseñó cómo.</p>
+            </div>
+            <div class="problem-item reveal rd4">
+                <div class="problem-item-icon">🤖</div>
+                <h3>Resultados genéricos</h3>
+                <p>La IA te da respuestas de Wikipedia cuando necesitas soluciones de negocio.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ─── TAGLINE ─── -->
+<div class="tagline-section">
+    <div class="wrap" style="text-align:center">
+        <p class="tagline-quote reveal">
+            "La IA no te va a sustituir, te va a sustituir el que sepa usar IA"
+        </p>
+    </div>
+</div>
+
+<!-- ─── ABOUT ─── -->
+<section style="padding:112px 0; position:relative; overflow:hidden;">
+    <div style="position:absolute; top:0; right:0; width:55%; height:100%; background:radial-gradient(circle at 80% 50%, rgba(232,112,64,.022) 0%, transparent 60%); pointer-events:none;"></div>
+
+    <div class="wrap" style="position:relative; z-index:1;">
+        <div class="about-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:88px; align-items:start;">
+
+            <div>
+                <p class="sec-label reveal">Sobre mí</p>
+                <h2 class="sec-h2 reveal rd1" style="margin-bottom:10px;">Rogelio<br>Rodríguez.</h2>
+                <p class="sec-h2 reveal rd1" style="font-size:clamp(1.1rem,2vw,1.6rem); color:var(--orange); margin-bottom:30px; letter-spacing:-.03em; font-weight:var(--w-bold);">Bienes Raíces + IA</p>
+
+                <div class="reveal rd2" style="display:flex; flex-direction:column; gap:14px; margin-bottom:36px;">
+                    <p style="color:var(--text-2); line-height:1.8; font-size:.96rem; font-weight:var(--w-light);">
+                        Te van a decir que la IA es complicada. Que necesitas saber de código. Que es solo para empresas grandes.
+                    </p>
+                    <p style="color:var(--text-2); line-height:1.8; font-size:.96rem; font-weight:var(--w-light);">
+                        Mi objetivo es enseñarte lo que a mi me funciona vendiendo propiedades en Mexico, con tiempo limitado y sin equipo profesional de tecnología.
+                    </p>
+                    <p style="color:var(--text-2); line-height:1.8; font-size:.96rem; font-weight:var(--w-light);">
+                        Si me sirvió a mí, estoy seguro que te sirve a ti.
+                    </p>
+                </div>
+
+                <a href="https://instagram.com/roger.ia_" target="_blank" rel="noopener" class="reveal rd3"
+                   style="display:inline-flex; align-items:center; gap:8px; color:var(--orange); font-size:.9rem; font-weight:var(--w-med); text-decoration:none; transition:gap .2s var(--ease);"
+                   onmouseover="this.style.gap='13px'" onmouseout="this.style.gap='8px'">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    Sígueme en Instagram
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+            </div>
+
+            <div class="reveal rd2">
+                <div class="principle">
+                    <div style="display:flex; gap:18px; align-items:start;">
+                        <span class="pnum">01</span>
+                        <div>
+                            <h4 style="font-size:.94rem; font-weight:var(--w-bold); margin-bottom:5px; letter-spacing:-.01em;">Sin tecnicismos</h4>
+                            <p style="color:var(--text-2); font-size:.86rem; line-height:1.65; font-weight:var(--w-light);">Si no lo puedes aplicar hoy, no sirve de nada.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="principle">
+                    <div style="display:flex; gap:18px; align-items:start;">
+                        <span class="pnum">02</span>
+                        <div>
+                            <h4 style="font-size:.94rem; font-weight:var(--w-bold); margin-bottom:5px; letter-spacing:-.01em;">Resultados reales</h4>
+                            <p style="color:var(--text-2); font-size:.86rem; line-height:1.65; font-weight:var(--w-light);">Solo comparto lo que he probado yo primero.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="principle">
+                    <div style="display:flex; gap:18px; align-items:start;">
+                        <span class="pnum">03</span>
+                        <div>
+                            <h4 style="font-size:.94rem; font-weight:var(--w-bold); margin-bottom:5px; letter-spacing:-.01em;">Aprendizaje abierto</h4>
+                            <p style="color:var(--text-2); font-size:.86rem; line-height:1.65; font-weight:var(--w-light);">Comparto lo que funciona y también lo que falla.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<div class="wrap"><div class="grad-line"></div></div>
+
+<!-- ─── MI ARSENAL (preview) ─── -->
+<section id="arsenal" class="arsenal-preview">
+    <span aria-hidden="true" style="
+        position:absolute; right:-2%; top:50%; transform:translateY(-50%);
+        font-size:clamp(120px,16vw,260px); font-weight:var(--w-bold);
+        color:transparent; -webkit-text-stroke:1px rgba(232,112,64,.04);
+        line-height:.9; letter-spacing:-.06em;
+        pointer-events:none; user-select:none; z-index:0;
+        white-space:nowrap;
+    ">ARSENAL</span>
+
+    <div class="wrap" style="position:relative; z-index:1;">
+        <div class="arsenal-preview-header">
+            <div>
+                <p class="sec-label reveal">Mi arsenal</p>
+                <h2 class="sec-h2 reveal rd1">
+                    Recursos <span style="color:var(--orange)">gratis</span><br>
+                    que uso todos los días
+                </h2>
+            </div>
+            <a href="arsenal.html" class="btn-ver-todos reveal rd2" id="index-ver-arsenal-btn">
+                Ver todos
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+        </div>
+
+        <div class="preview-grid">
+            <a href="recursos/stack-herramientas-ia.html" class="preview-card reveal rd1" id="preview-stack">
+                <div class="preview-card-icon">🛠️</div>
+                <div class="preview-card-tag">Stack</div>
+                <div class="preview-card-title">Stack de 12 Herramientas IA</div>
+                <div class="preview-card-arrow">
+                    Ver recurso
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </div>
+            </a>
+
+            <a href="recursos/prompt-skill-agent.html" class="preview-card reveal rd2" id="preview-conceptos">
+                <div class="preview-card-icon">🧠</div>
+                <div class="preview-card-tag">Framework</div>
+                <div class="preview-card-title">Prompt vs Skill vs Agent</div>
+                <div class="preview-card-arrow">
+                    Ver recurso
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </div>
+            </a>
+
+            <a href="recursos/claude-chatgpt-gemini.html" class="preview-card reveal rd3" id="preview-comparativa">
+                <div class="preview-card-icon">⚖️</div>
+                <div class="preview-card-tag">Comparativa</div>
+                <div class="preview-card-title">Claude vs ChatGPT vs Gemini</div>
+                <div class="preview-card-arrow">
+                    Ver recurso
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </div>
+            </a>
+
+            <a href="recursos/de-idea-a-video-30-min.html" class="preview-card reveal rd4" id="preview-workflow">
+                <div class="preview-card-icon">🎬</div>
+                <div class="preview-card-tag">Workflow</div>
+                <div class="preview-card-title">De Idea a Video en 30 Min</div>
+                <div class="preview-card-arrow">
+                    Ver recurso
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ─── PRE-FOOTER CTA ─── -->
+<section class="prefooter">
+    <div style="max-width:560px; margin:0 auto; position:relative; z-index:1;">
+        <p class="reveal" style="font-family:var(--font-mono); font-size:.67rem; letter-spacing:.14em; text-transform:uppercase; color:var(--text-2); margin-bottom:18px;">
+            Sin registro · Sin email · Sin catch
+        </p>
+        <h2 class="sec-h2 reveal rd1" style="font-size:clamp(1.7rem,3.4vw,2.8rem); margin-bottom:18px;">
+            ¿Listo para usar IA<br>en tu negocio?
+        </h2>
+        <p class="reveal rd2" style="color:var(--text-2); font-size:.96rem; line-height:1.76; margin-bottom:32px; font-weight:var(--w-light);">
+            Empieza con mi arsenal. Tarda 3 minutos en revisarlo y ya tienes todo lo que necesitas para arrancar.
+        </p>
+        <a href="arsenal.html" class="btn-primary reveal rd2" id="cta-arsenal-btn" style="padding:15px 36px; font-size:1rem;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            Obtener el Stack Gratis
+        </a>
+        <p class="reveal rd3" style="margin-top:14px; font-size:.69rem; color:var(--text-3);">
+            Acceso directo · Sin registro · Gratis para siempre
+        </p>
+    </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer style="border-top:1px solid var(--border);">
+    <div class="footer-inner">
+        <div>
+            <a href="/" class="nav-brand">Roger<em>.IA</em></a>
+            <p style="color:var(--text-2); font-size:.71rem; margin-top:4px; font-weight:var(--w-light);">Rogelio Rodríguez — Mazatlán, México</p>
+        </div>
+        <a href="https://instagram.com/roger.ia_" target="_blank" rel="noopener" class="nav-ig">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            @roger.ia_
+        </a>
+    </div>
+</footer>
+
+<!-- ─── MOBILE STICKY ─── -->
+<div class="mob-sticky">
+    <div>
+        <div style="font-size:.8rem; font-weight:var(--w-bold); color:var(--text);">Arsenal de recursos IA</div>
+        <div style="font-size:.68rem; color:var(--text-2); margin-top:2px;">Sin registro · Gratis</div>
+    </div>
+    <a href="arsenal.html" class="btn-primary" id="mob-arsenal-btn" style="padding:10px 18px; font-size:.84rem; white-space:nowrap;">
+        Ver Arsenal
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+</div>
+
+<script>
+    // Nav CTA appears after hero scrolls out
+    const navCta = document.getElementById('nav-cta');
+    const heroEl = document.querySelector('.hero');
+    if (navCta && heroEl) {
+        new IntersectionObserver(entries => {
+            navCta.classList.toggle('visible', !entries[0].isIntersecting);
+        }, { threshold: 0.15 }).observe(heroEl);
+    }
+
+    // Scroll reveal
+    const ro = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); }
+        });
+    }, { threshold: 0.08, rootMargin: '0px 0px -48px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+    // Smooth anchors
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', e => {
+            e.preventDefault();
+            const t = document.querySelector(a.getAttribute('href'));
+            if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    });
+
+    // Terminal typewriter
+    const convos = [
+        { q: '¿Cuál es la diferencia entre GPT-4 y Claude?',   a: 'Depende del caso. Para escritura larga, Claude gana. Para código, GPT-4. Te muestro cuándo usar cada uno...' },
+        { q: '¿Cómo hago un prompt que funcione de verdad?',    a: 'Contexto + tarea + formato. Eso es todo. Sin trucos raros. Aquí tienes la estructura exacta...' },
+        { q: '¿Necesito saber programar para usar IA?',        a: 'Para nada. El 90% de lo útil no requiere código. Te enseño por dónde empezar...' }
+    ];
+    let ci=0, ch=0, phase='q';
+    const termEl = document.getElementById('terminal-text');
+
+    function tick() {
+        if (!termEl) return;
+        const {q,a} = convos[ci];
+        if (phase === 'q') {
+            termEl.innerHTML = `<div style="color:#9ca3af;margin-bottom:12px"><span style="color:#E87040">tú</span>&nbsp;→&nbsp;${q.substring(0,ch)}<span class="cursor" style="border-right:1.5px solid #E87040">&nbsp;</span></div>`;
+            if (ch++ <= q.length) setTimeout(tick, 40);
+            else { phase='a'; ch=0; setTimeout(tick, 580); }
+        } else {
+            termEl.innerHTML = `<div style="color:#9ca3af;margin-bottom:12px"><span style="color:#E87040">tú</span>&nbsp;→&nbsp;${q}</div><div style="color:#e5e7eb"><span style="color:#27c93f">roger.ia</span>&nbsp;→&nbsp;${a.substring(0,ch)}<span class="cursor" style="border-right:1.5px solid #27c93f">&nbsp;</span></div>`;
+            if (ch++ <= a.length) setTimeout(tick, 26);
+            else setTimeout(() => { ci=(ci+1)%convos.length; ch=0; phase='q'; termEl.innerHTML=''; tick(); }, 3500);
+        }
+    }
+    setTimeout(tick, 800);
+
+    // Number ticker
+    function runCounter(el) {
+        const target = parseInt(el.dataset.counter, 10);
+        const suffix = el.dataset.suffix || '';
+        const duration = target <= 5 ? 900 : target <= 20 ? 1200 : 1600;
+        const start = performance.now();
+        function step(now) {
+            const p = Math.min((now - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - p, 3);
+            const val = Math.round(eased * target);
+            el.textContent = val + suffix;
+            if (p < 1) requestAnimationFrame(step);
+            else el.textContent = target + suffix;
+        }
+        el.textContent = '0' + suffix;
+        requestAnimationFrame(step);
+    }
+    const counterObs = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (!e.isIntersecting) return;
+            runCounter(e.target);
+            counterObs.unobserve(e.target);
+        });
+    }, { threshold: 0.6 });
+    document.querySelectorAll('[data-counter]').forEach(el => counterObs.observe(el));
+</script>
+</body>
+</html>
